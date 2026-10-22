@@ -18,9 +18,9 @@ import neth.iecal.curbox.ui.fragments.main.reducers.blockertools.UsageSettingsAd
 
 abstract class BaseUsageSettingsFragment : BottomSheetDialogFragment() {
 
-    protected open val daysOfWeek = listOf(
-        "Same Limit Everyday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-    )
+    protected open val daysOfWeek by lazy {
+        resources.getStringArray(R.array.usage_days_monday_first).toList()
+    }
 
     private val dayItems = mutableListOf<UsageDayItem>()
     private lateinit var adapter: UsageSettingsAdapter

@@ -55,7 +55,7 @@ class UiHiderFragment : Fragment() {
         binding.btnStartNodePicker.setOnClickListener { startNodePicker() }
 
         binding.btnHelp.setOnClickListener {
-            ViewUtils.showHelpPopup(it, "Hide specific UI elements within apps using custom scripts.", "https://curbox.app/docs/reducers/hide-ui-elements/")
+            ViewUtils.showHelpPopup(it, getString(R.string.ui_hider_help_popup), "https://curbox.app/docs/reducers/hide-ui-elements/")
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -90,7 +90,7 @@ class UiHiderFragment : Fragment() {
             if (script != null) {
                 putExtra(UiHiderEditorFragment.EXTRA_SCRIPT_ID, script.id)
                 putExtra(UiHiderEditorFragment.EXTRA_PACKAGE_NAME, script.packageName)
-                putExtra(UiHiderEditorFragment.EXTRA_LABEL, script.label)
+                putExtra(UiHiderEditorFragment.EXTRA_LABEL, script.localizedLabel(requireContext()))
                 putExtra(UiHiderEditorFragment.EXTRA_SOURCE, script.source)
                 putExtra(UiHiderEditorFragment.EXTRA_IS_ENABLED, script.isEnabled)
             }

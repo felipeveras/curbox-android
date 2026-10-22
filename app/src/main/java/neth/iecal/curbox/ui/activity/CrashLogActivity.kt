@@ -37,10 +37,10 @@ class CrashLogActivity : AppCompatActivity() {
         binding.btnShare.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
-                putExtra(Intent.EXTRA_SUBJECT, "Curbox Crash Logs")
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crash_logs_share_subject))
                 putExtra(Intent.EXTRA_TEXT, content)
             }
-            startActivity(Intent.createChooser(intent, "Share Crash Logs"))
+            startActivity(Intent.createChooser(intent, getString(R.string.crash_logs_share_title)))
         }
 
         binding.btnClose.setOnClickListener {

@@ -456,17 +456,18 @@ class AllAppsUsageViewModel(application: Application) : AndroidViewModel(applica
             try {
                 val appInfo = packageManager.getApplicationInfo(it, 0)
                 val packageInfo = packageManager.getPackageInfo(it, 0)
-                val category = when (appInfo.category) {
-                    ApplicationInfo.CATEGORY_GAME -> "GAME"
-                    ApplicationInfo.CATEGORY_SOCIAL -> "SOCIAL NETWORKING"
-                    ApplicationInfo.CATEGORY_PRODUCTIVITY -> "PRODUCTIVITY"
-                    ApplicationInfo.CATEGORY_VIDEO -> "VIDEO"
-                    ApplicationInfo.CATEGORY_AUDIO -> "AUDIO"
-                    ApplicationInfo.CATEGORY_NEWS -> "NEWS"
-                    ApplicationInfo.CATEGORY_IMAGE -> "IMAGE"
-                    ApplicationInfo.CATEGORY_MAPS -> "MAPS"
-                    else -> "APP"
+                val categoryRes = when (appInfo.category) {
+                    ApplicationInfo.CATEGORY_GAME -> neth.iecal.curbox.R.string.app_category_games
+                    ApplicationInfo.CATEGORY_SOCIAL -> neth.iecal.curbox.R.string.app_category_social
+                    ApplicationInfo.CATEGORY_PRODUCTIVITY -> neth.iecal.curbox.R.string.app_category_productivity
+                    ApplicationInfo.CATEGORY_VIDEO -> neth.iecal.curbox.R.string.app_category_video
+                    ApplicationInfo.CATEGORY_AUDIO -> neth.iecal.curbox.R.string.app_category_audio
+                    ApplicationInfo.CATEGORY_NEWS -> neth.iecal.curbox.R.string.app_category_news
+                    ApplicationInfo.CATEGORY_IMAGE -> neth.iecal.curbox.R.string.app_category_images
+                    ApplicationInfo.CATEGORY_MAPS -> neth.iecal.curbox.R.string.app_category_maps
+                    else -> neth.iecal.curbox.R.string.app_category_undefined
                 }
+                val category = getApplication<android.app.Application>().getString(categoryRes)
 
                 AppMetadata(
                     label = appInfo.loadLabel(packageManager),

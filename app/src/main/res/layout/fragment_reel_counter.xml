@@ -144,6 +144,13 @@
                 app:tint="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
 
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switchBrainDaily" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="24dp"
+            android:text="@string/brain_daily_mode" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/brain_mode_help" android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

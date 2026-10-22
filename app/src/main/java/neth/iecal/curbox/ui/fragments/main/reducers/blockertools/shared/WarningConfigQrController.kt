@@ -67,7 +67,7 @@ internal class WarningConfigQrController(
         keyListRenderer.render(
             binding.qrListContainer,
             currentKeys,
-            "QR/Barcode",
+            fragment.getString(R.string.warning_qr_key_label),
             ::refreshKeyList
         )
     }
@@ -109,9 +109,7 @@ internal class WarningConfigQrController(
         pendingDuration = duration
         val options = ScanOptions()
         options.setDesiredBarcodeFormats(ScanOptions.ALL_CODE_TYPES)
-        options.setPrompt(
-            "Scan a QR code or barcode to unlock the blocker later. You can use almost any code, even one from a product box at home, so there’s no need to print a new one!"
-        )
+        options.setPrompt(fragment.getString(R.string.warning_qr_scan_prompt))
         options.setCameraId(0)
         options.setBeepEnabled(false)
         options.setBarcodeImageEnabled(true)

@@ -36,7 +36,7 @@ class SyncFragment : Fragment() {
             scanLauncher.launch(ScanOptions()
                 .setCaptureActivity(neth.iecal.curbox.ui.activity.PortraitCaptureActivity::class.java)
                 .setOrientationLocked(true)
-                .setPrompt("Point at the pairing code"))
+                .setPrompt(getString(R.string.sync_scan_pairing_code)))
         }
         controller.bind()
         return v

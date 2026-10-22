@@ -32,9 +32,9 @@ abstract class BaseTimeSettingsFragment : BottomSheetDialogFragment() {
         Custom
     }
 
-    protected open val daysOfWeek = listOf(
-        "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-    )
+    protected open val daysOfWeek by lazy {
+        resources.getStringArray(R.array.weekdays_sunday_first).toList()
+    }
 
     private lateinit var switchEveryDay: CompoundButton
     private lateinit var everydayContainer: View

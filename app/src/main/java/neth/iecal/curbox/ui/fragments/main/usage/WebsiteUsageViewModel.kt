@@ -54,13 +54,15 @@ class WebsiteUsageViewModel(application: Application, private val packageName: S
     private val _totalTime = MutableLiveData<Long>(0L)
     val totalTime: LiveData<Long> = _totalTime
 
-    private val _dateSublabel = MutableLiveData("TOTAL TODAY")
+    private val _dateSublabel = MutableLiveData(getApplication<Application>().getString(neth.iecal.curbox.R.string.total_today))
     val dateSublabel: LiveData<String> = _dateSublabel
 
     private val _canGoNext = MutableLiveData(false)
     val canGoNext: LiveData<Boolean> = _canGoNext
 
-    private val dayLabelFormatter = DateTimeFormatter.ofPattern("MMM d")
+    private val dayLabelFormatter = DateTimeFormatter.ofPattern(
+        "MMM d", getApplication<Application>().resources.configuration.locales[0]
+    )
 
     // Search keywords typed in the URL bar get stored with the raw text as the domain.
     // A real website domain has no spaces and contains at least one dot (e.g. "youtube.com").
@@ -164,7 +166,11 @@ class WebsiteUsageViewModel(application: Application, private val packageName: S
     private suspend fun loadDayStats(date: LocalDate) {
         val today = LocalDate.now()
         val isToday = date == today
-        val sublabel = if (isToday) "TOTAL TODAY" else "TOTAL · ${date.format(dayLabelFormatter)}"
+        val sublabel = if (isToday) {
+            getApplication<Application>().getString(neth.iecal.curbox.R.string.total_today)
+        } else {
+            getApplication<Application>().getString(neth.iecal.curbox.R.string.total_for_period, date.format(dayLabelFormatter))
+        }
 
         val dateString = date.format(DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.getDefault()))
         val websiteStats = websitesForDate(date, dateString)

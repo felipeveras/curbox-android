@@ -49,6 +49,12 @@ import neth.iecal.curbox.anti_stimulants.MindfulMessage
 
 class WarningActivity : AppCompatActivity() {
 
+    private val redirectHandler = android.os.Handler(android.os.Looper.getMainLooper())
+    private var redirectTick: Runnable? = null
+    private var redirectPending = false
+    private var redirectAttempted = false
+    private var redirectCancelled = false
+    private var redirectLaunch: (() -> Unit)? = null
     private var proceedTimer: CountDownTimer? = null
     private var dialog: AlertDialog? = null
 
@@ -98,6 +104,8 @@ class WarningActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        redirectCancelled = savedInstanceState?.getBoolean("redirect_cancelled", false) ?: false
+        redirectAttempted = savedInstanceState?.getBoolean("redirect_attempted", false) ?: false
         mathRetryEndsAtMs = savedInstanceState?.getLong(KEY_MATH_RETRY_ENDS_AT_MS) ?: 0L
         sendWarningScreenVisibility(true)
 
@@ -108,6 +116,9 @@ class WarningActivity : AppCompatActivity() {
             AppBlockerWarningScreenConfig::class.java
         )
 
+        val isAutomaticRedirect = mode == Constants.WARNING_SCREEN_MODE_APP_BLOCKER &&
+            !intent.getStringExtra("redirect_package").isNullOrBlank() &&
+            intent.getBooleanExtra("redirect_auto", false)
         val targetId = intent.getStringExtra("result_id") ?: ""
         var isProceedLimitExceeded = false
         var timeUntilNextProceedMn = 0L
@@ -147,7 +158,7 @@ class WarningActivity : AppCompatActivity() {
         binding = DialogWarningOverlayBinding.inflate(layoutInflater)
         isFocusGoalRequired = warningScreenConfig.isFocusGoalRequirementEnabled
         isFocusGoalVerified = !isFocusGoalRequired
-        if (isFocusGoalRequired &&
+        if (isFocusGoalRequired && !isAutomaticRedirect &&
             !warningScreenConfig.isProceedDisabled &&
             !isProceedLimitExceeded
         ) {
@@ -159,10 +170,10 @@ class WarningActivity : AppCompatActivity() {
         val isDialogCancelable =
             mode != Constants.WARNING_SCREEN_MODE_APP_BLOCKER || isHomePressRequested
 
-        if (warningScreenConfig.isProceedDisabled || isProceedLimitExceeded) {
+        if (isAutomaticRedirect || warningScreenConfig.isProceedDisabled || isProceedLimitExceeded) {
             binding.btnProceed.visibility = View.GONE
             binding.btnCancel.setText(R.string.okay)
-            if (isProceedLimitExceeded) {
+            if (isProceedLimitExceeded && !isAutomaticRedirect) {
                 binding.proceedSeconds.visibility = View.VISIBLE
                 binding.proceedSeconds.text = getString(R.string.warning_proceed_limit_reached, warningScreenConfig.allowedProceeds, warningScreenConfig.proceedsTimeWindowMn, timeUntilNextProceedMn)
             } else {
@@ -288,6 +299,56 @@ class WarningActivity : AppCompatActivity() {
 
         binding.warningMsg.text = warningScreenConfig.message.random()
 
+        val redirectPackage = intent.getStringExtra("redirect_package")
+        if (mode == Constants.WARNING_SCREEN_MODE_APP_BLOCKER && !redirectPackage.isNullOrBlank()) {
+            val denied = intent.getStringArrayListExtra("redirect_blocked_packages").orEmpty().toSet() +
+                listOfNotNull(intent.getStringExtra("launch_package"))
+            val redirect = neth.iecal.curbox.blockers.AppRedirectAction(redirectPackage, packageName, denied)
+            binding.btnRedirect.visibility = View.VISIBLE
+            binding.btnCancel.setText(R.string.redirect_cancel_home)
+            if (!isProceedLimitExceeded) {
+                binding.proceedSeconds.text = getString(R.string.proceed_in, warningScreenConfig.proceedDelayInSecs)
+            }
+            val appName = neth.iecal.curbox.utils.RedirectApps.label(this, redirectPackage)
+            if (isAutomaticRedirect) {
+                // Only suppress the untouched upstream defaults, never a custom message.
+                if (warningScreenConfig.message == AppBlockerWarningScreenConfig().message) {
+                    binding.warningMsg.visibility = View.GONE
+                }
+                binding.redirectTitle.visibility = View.VISIBLE
+                binding.redirectTitle.text = getString(R.string.redirect_title, appName)
+                binding.proceedsLeft.visibility = View.GONE
+                binding.btnProceed.isEnabled = false
+                binding.btnProceed.setOnClickListener(null)
+            }
+            binding.btnRedirect.text = getString(R.string.redirect_open_app, appName)
+            try {
+                binding.btnRedirect.icon = packageManager.getApplicationIcon(redirectPackage)
+                binding.btnRedirect.iconTint = null
+            } catch (_: android.content.pm.PackageManager.NameNotFoundException) { /* Safe text fallback. */ }
+            if (binding.btnRedirect.icon == null) binding.btnRedirect.setIconResource(android.R.drawable.sym_def_app_icon)
+            redirectPending = intent.getBooleanExtra("redirect_auto", false) && !redirectCancelled
+            binding.btnRedirect.isEnabled = !redirectAttempted
+            redirectLaunch = action@ {
+                if (redirectAttempted) return@action
+                redirectAttempted = true
+                cancelRedirectCountdown()
+                binding.btnRedirect.isEnabled = false
+                val opened = redirect.open { target ->
+                    val launch = packageManager.getLaunchIntentForPackage(target) ?: return@open false
+                    startActivity(launch)
+                    true
+                }
+                if (opened) closeWarningScreen()
+                else {
+                    binding.redirectStatus.visibility = View.VISIBLE
+                    binding.redirectStatus.setText(R.string.redirect_unavailable)
+                    Toast.makeText(this, R.string.redirect_unavailable, Toast.LENGTH_LONG).show()
+                }
+            }
+            binding.btnRedirect.setOnClickListener { redirectLaunch?.invoke() }
+        }
+
         if (warningScreenConfig.isOnOpenConfig) {
             binding.minsPicker.visibility = View.GONE
         } else {
@@ -299,6 +360,7 @@ class WarningActivity : AppCompatActivity() {
         }
 
         binding.btnCancel.setOnClickListener {
+            cancelRedirectCountdown()
             if (mode == Constants.WARNING_SCREEN_MODE_APP_BLOCKER || mode == Constants.WARNING_SCREEN_MODE_KEYWORD_BLOCKER || isHomePressRequested) {
                 val intent = Intent(Intent.ACTION_MAIN)
                 intent.addCategory(Intent.CATEGORY_HOME)
@@ -310,6 +372,7 @@ class WarningActivity : AppCompatActivity() {
         }
 
         binding.btnProceed.setOnClickListener {
+            if (isAutomaticRedirect) return@setOnClickListener
             if (isFocusGoalRequired &&
                 !isFocusGoalVerified
             ) {
@@ -326,7 +389,7 @@ class WarningActivity : AppCompatActivity() {
             if (warningScreenConfig.isQrUnlockRequirementEnabled && !isQrScanned) {
                 val options = ScanOptions()
                 options.setDesiredBarcodeFormats(ScanOptions.ALL_CODE_TYPES)
-                options.setPrompt("Scan a QR Code to unlock")
+                options.setPrompt(getString(R.string.warning_scan_qr_prompt))
                 options.setCameraId(0) // Use a specific camera of the device
                 options.setBeepEnabled(false)
                 options.setBarcodeImageEnabled(true)
@@ -692,17 +755,54 @@ class WarningActivity : AppCompatActivity() {
         nfcTapDialog = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (redirectPending && !redirectCancelled) {
+            binding.redirectStatus.visibility = View.VISIBLE
+            val deadline = SystemClock.uptimeMillis() + 5_000L
+            redirectTick = object : Runnable {
+                override fun run() {
+                    if (redirectCancelled || isFinishing ||
+                        !(getSystemService(Context.POWER_SERVICE) as android.os.PowerManager).isInteractive) {
+                        cancelRedirectCountdown()
+                        return
+                    }
+                    val remaining = deadline - SystemClock.uptimeMillis()
+                    if (remaining <= 0L) {
+                        redirectLaunch?.invoke()
+                    } else {
+                        binding.redirectStatus.text = getString(R.string.redirect_countdown, (remaining + 999) / 1000)
+                        redirectHandler.postDelayed(this, minOf(200L, remaining))
+                    }
+                }
+            }
+            redirectHandler.post(redirectTick!!)
+        }
+    }
+
+    private fun cancelRedirectCountdown() {
+        redirectCancelled = true
+        redirectTick?.let(redirectHandler::removeCallbacks)
+        redirectTick = null
+        if (::binding.isInitialized) binding.redirectStatus.visibility = View.GONE
+    }
+
     override fun onPause() {
+        cancelRedirectCountdown()
         super.onPause()
         stopNfcUnlockScan()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        cancelRedirectCountdown()
+        outState.putBoolean("redirect_cancelled", true)
+        outState.putBoolean("redirect_attempted", redirectAttempted)
         outState.putLong(KEY_MATH_RETRY_ENDS_AT_MS, mathRetryEndsAtMs)
         super.onSaveInstanceState(outState)
     }
 
     override fun onDestroy() {
+        cancelRedirectCountdown()
         sendWarningScreenVisibility(false)
         super.onDestroy()
         stopNfcUnlockScan()
@@ -742,6 +842,7 @@ class WarningActivity : AppCompatActivity() {
     }
 
     private fun closeWarningScreen() {
+        cancelRedirectCountdown()
         sendWarningScreenVisibility(false)
         dialog?.dismiss()
         finishAffinity()

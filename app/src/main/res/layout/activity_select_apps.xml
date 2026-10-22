@@ -71,7 +71,7 @@
                     android:layout_height="48dp"
                     android:iconifiedByDefault="false"
                     android:queryBackground="@android:color/transparent"
-                    android:queryHint="Search apps..."
+                    android:queryHint="@string/redirect_search_hint"
                     android:theme="@style/Theme.Material3.DayNight" />
             </com.google.android.material.card.MaterialCardView>
 

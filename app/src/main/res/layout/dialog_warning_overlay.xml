@@ -7,6 +7,16 @@
     android:padding="8dp">
 
     <TextView
+        android:id="@+id/redirect_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:textColor="?attr/colorOnSurface"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/warning_msg"
         style="@style/TextAppearance.Material3.TitleLarge"
         android:layout_width="match_parent"
@@ -153,6 +163,25 @@
         android:layout_marginBottom="8dp"
         android:enabled="false"
         android:text="@string/proceed" />
+
+    <TextView
+        android:id="@+id/redirect_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:accessibilityLiveRegion="polite"
+        android:visibility="gone" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_redirect"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:visibility="gone"
+        android:text="@string/redirect_open" />
 
     <Button
         android:id="@+id/btn_cancel"

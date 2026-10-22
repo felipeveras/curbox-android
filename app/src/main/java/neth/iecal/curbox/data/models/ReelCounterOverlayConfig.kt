@@ -9,7 +9,8 @@ data class ReelCounterOverlayConfig(
     val checkpointsEnabled: Boolean = false,
     val checkpointInterval: Int = 10,
     val positionX: Float = 0.5f,
-    val positionY: Float = 0.3f
+    val positionY: Float = 0.3f,
+    val dailyMode: Boolean = false
 ) {
     fun shouldShowAtCount(reelCount: Int): Boolean {
         if (!checkpointsEnabled) return true

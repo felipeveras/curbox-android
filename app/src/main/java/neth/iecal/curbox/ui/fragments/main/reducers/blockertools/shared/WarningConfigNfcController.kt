@@ -44,7 +44,7 @@ internal class WarningConfigNfcController(
         keyListRenderer.render(
             binding.nfcListContainer,
             currentKeys,
-            "NFC tag",
+            fragment.getString(R.string.warning_nfc_key_label),
             ::refreshKeyList
         )
     }

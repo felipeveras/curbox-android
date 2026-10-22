@@ -46,15 +46,25 @@ class ReelCounterFragment : Fragment() {
         setupListeners()
         observeViewModel()
         viewModel.initialize()
+        // The brain uses fixed, contrast-safe ink and compact type. Keep legacy values in JSON
+        // for compatibility, but do not offer controls which no longer affect this overlay.
+        listOf<View>(binding.sliderReelTextSize, binding.rowReelBackgroundColor).forEach { child ->
+            var parent = child.parent
+            while (parent is View && parent !is com.google.android.material.card.MaterialCardView) parent = (parent as View).parent
+            (parent as? View)?.visibility = View.GONE
+        }
     }
 
     private fun setupListeners() {
+        binding.switchBrainDaily.setOnCheckedChangeListener { _, checked ->
+            if (!isUpdatingUi) viewModel.updateOverlayConfig(viewModel.overlayConfig.value.copy(dailyMode = checked))
+        }
         binding.switchEnableCounter.setOnCheckedChangeListener { _, isChecked ->
             if (!isUpdatingUi) viewModel.setIsActive(isChecked)
         }
 
         binding.btnHelp.setOnClickListener {
-            ViewUtils.showHelpPopup(it, "Track how many short videos you watch to build better digital habits.", "https://curbox.app/docs/reducers/video-counter/")
+            ViewUtils.showHelpPopup(it, getString(R.string.reel_counter_help_popup), "https://curbox.app/docs/reducers/video-counter/")
         }
 
         binding.btnPrevWeek.setOnClickListener { viewModel.goToPreviousWeek() }
@@ -153,6 +163,7 @@ class ReelCounterFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.overlayConfig.collectLatest { config ->
                 isUpdatingUi = true
+                binding.switchBrainDaily.isChecked = config.dailyMode
 
                 if (binding.sliderReelTextSize.value != config.textSize) {
                     binding.sliderReelTextSize.value = config.textSize.coerceIn(24f, 120f)
@@ -232,20 +243,17 @@ class ReelCounterFragment : Fragment() {
         val config = viewModel.overlayConfig.value
         positionScrim = OverlayDragHelper.showDragOverlay(
             fragment = this,
-            layoutResId = R.layout.overlay_usage_stat,
+            layoutResId = R.layout.overlay_brain_counter,
             positionX = config.positionX,
             positionY = config.positionY,
             setupWidget = { widget ->
-                val r = (config.bgColor shr 16) and 0xFF
-                val g = (config.bgColor shr 8) and 0xFF
-                val b = config.bgColor and 0xFF
-                widget.setBackgroundColor(Color.argb(config.bgOpacity * 255 / 100, r, g, b))
+                widget.findViewById<neth.iecal.curbox.ui.overlay.BrainView>(R.id.brain).stage = 2
                 widget.findViewById<TextView>(R.id.reel_counter).apply {
                     visibility = View.VISIBLE
-                    text = "42"
-                    textSize = config.textSize
-                    setTextColor(toOpaqueColor(config.textColor))
-                    alpha = config.textOpacity / 100f
+                    text = "6"
+                    textSize = 22f
+                    setTextColor(Color.WHITE)
+                    alpha = 1f
                 }
                 widget.findViewById<TextView>(R.id.time_elapsed_txt).apply {
                     visibility = View.GONE

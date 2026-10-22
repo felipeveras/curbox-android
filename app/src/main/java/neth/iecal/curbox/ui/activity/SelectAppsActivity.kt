@@ -277,7 +277,7 @@ class SelectAppsActivity : AppCompatActivity() {
                 filteredList.clear()
                 filteredList.addAll(
                     appItemList.filter {
-                        it.displayName.contains(query, ignoreCase = true)
+                        it.displayName.contains(query, ignoreCase = true) || it.packageName.contains(query, ignoreCase = true)
                     }
                 )
                 binding.appList.adapter?.notifyDataSetChanged()
@@ -298,6 +298,7 @@ class SelectAppsActivity : AppCompatActivity() {
     inner class ApplicationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val appIcon: ImageView = itemView.findViewById(R.id.app_icon)
         val appName: TextView = itemView.findViewById(R.id.app_name)
+        val appPackage: TextView = itemView.findViewById(R.id.app_package)
         val checkbox: CheckBox = itemView.findViewById(R.id.checkbox)
     }
 
@@ -317,6 +318,7 @@ class SelectAppsActivity : AppCompatActivity() {
 
             holder.appIcon.setImageDrawable(null)
             holder.appName.text = appItem.displayName
+            holder.appPackage.text = appItem.packageName
 
             if (appItem.appInfo != null) {
                 lifecycleScope.launch(Dispatchers.IO) {
