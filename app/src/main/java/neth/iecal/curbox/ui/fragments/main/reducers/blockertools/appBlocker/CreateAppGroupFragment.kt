@@ -51,6 +51,9 @@ class CreateAppGroupFragment : Fragment() {
         }
     }
 
+    private var redirectPackage: String? = null
+    private var redirectAfter5Seconds = false
+    private var redirectRestored = false
     private var isDeleting = false
 
     override fun onCreateView(
@@ -63,6 +66,30 @@ class CreateAppGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (savedInstanceState?.containsKey("redirect_package") == true) {
+            redirectPackage = savedInstanceState.getString("redirect_package")
+            redirectAfter5Seconds = savedInstanceState.getBoolean("redirect_auto", false)
+            redirectRestored = true
+        }
+        updateRedirectLabel()
+        binding.btnRedirectApp.setOnClickListener {
+            val pm = requireContext().packageManager
+            val denied = viewModel.groups.value.filter { it.isActive }.flatMap { it.selectedPackages }.toSet() + selectedApps
+            val apps = pm.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER), 0)
+                .filter { it.activityInfo.packageName != requireContext().packageName && it.activityInfo.packageName !in denied }
+                .distinctBy { it.activityInfo.packageName }
+                .sortedBy { it.loadLabel(pm).toString().lowercase() }
+            neth.iecal.curbox.ui.activity.RedirectAppPicker.show(binding.root.context, apps, redirectPackage) { selected ->
+                redirectPackage = selected
+                if (selected == null) redirectAfter5Seconds = false
+                updateRedirectLabel()
+            }
+        }
+
+        binding.switchRedirectAuto.setOnCheckedChangeListener { _, checked ->
+            redirectAfter5Seconds = checked
+        }
 
         var isEditing = false
         val groupId = requireActivity().intent.getStringExtra("group_id") ?: arguments?.getString("group_id")
@@ -101,6 +128,11 @@ class CreateAppGroupFragment : Fragment() {
                             viewModel.currentUsageConfig = config.usage
                         }
                         viewModel.warningScrnConfig = group.warningScreenConfig
+                        if (!redirectRestored) {
+                            redirectPackage = group.redirectPackage
+                            redirectAfter5Seconds = group.redirectAfter5Seconds
+                        }
+                        updateRedirectLabel()
                     }
                 }
             }
@@ -172,6 +204,8 @@ class CreateAppGroupFragment : Fragment() {
                 if (isEditingRecord && targetExistingGroup != null) targetExistingGroup.isActive
                 else true,
             temporarilyDisabledUntilMs = targetExistingGroup?.temporarilyDisabledUntilMs ?: 0L,
+            redirectPackage = redirectPackage,
+            redirectAfter5Seconds = redirectAfter5Seconds && redirectPackage != null,
             warningScreenConfig = viewModel.warningScrnConfig
         )
 
@@ -217,6 +251,24 @@ class CreateAppGroupFragment : Fragment() {
                 _binding?.fabSaveGroup?.isEnabled = true
             }
         }
+    }
+
+    private fun updateRedirectLabel() {
+        val label = redirectPackage?.let { neth.iecal.curbox.utils.RedirectApps.label(requireContext(), it) }
+        binding.btnRedirectApp.text = getString(R.string.redirect_setting, label ?: getString(R.string.redirect_off))
+        binding.btnRedirectApp.icon = redirectPackage?.let {
+            try { requireContext().packageManager.getApplicationIcon(it) }
+            catch (_: android.content.pm.PackageManager.NameNotFoundException) { null }
+        }
+        binding.btnRedirectApp.iconTint = null
+        binding.switchRedirectAuto.isEnabled = redirectPackage != null
+        binding.switchRedirectAuto.isChecked = redirectAfter5Seconds
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString("redirect_package", redirectPackage)
+        outState.putBoolean("redirect_auto", redirectAfter5Seconds)
+        super.onSaveInstanceState(outState)
     }
 
     private fun openAppSelector() {

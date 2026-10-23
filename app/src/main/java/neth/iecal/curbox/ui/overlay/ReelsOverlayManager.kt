@@ -2,104 +2,86 @@ package neth.iecal.curbox.ui.overlay
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.graphics.PixelFormat
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewTreeObserver
-import android.view.WindowManager
+import android.view.*
 import android.view.WindowManager.LayoutParams
+import neth.iecal.curbox.R
 import neth.iecal.curbox.data.models.ReelCounterOverlayConfig
-import neth.iecal.curbox.databinding.OverlayUsageStatBinding
+import neth.iecal.curbox.databinding.OverlayBrainCounterBinding
 
 class ReelsOverlayManager(private val context: Context) {
-
     private var overlayView: View? = null
-    var binding: OverlayUsageStatBinding? = null
+    var binding: OverlayBrainCounterBinding? = null
     var isOverlayVisible = false
     private var windowManager: WindowManager? = null
-
+    var onPositionChanged: (Float, Float) -> Unit = { _, _ -> }
     var reelsScrolledThisSession = 0
+        set(value) { field = value.coerceAtLeast(0); renderCount() }
 
-    @SuppressLint("InlinedApi")
+    fun renderCount() {
+        val count = reelsScrolledThisSession
+        val stage = when { count < 3 -> 0; count < 6 -> 1; count < 10 -> 2; count < 15 -> 3; else -> 4 }
+        binding?.brain?.stage = stage
+        binding?.reelCounter?.text = count.toString()
+        val names = context.resources.getStringArray(R.array.brain_stages)
+        binding?.root?.contentDescription = context.getString(R.string.brain_counter_description, count, names[stage])
+    }
+
+    @SuppressLint("InlinedApi", "ClickableViewAccessibility")
     fun startDisplaying(config: ReelCounterOverlayConfig = ReelCounterOverlayConfig(), isVisible: Boolean = true) {
         if (overlayView != null || isOverlayVisible) return
-
-        binding = OverlayUsageStatBinding.inflate(LayoutInflater.from(context))
-        isOverlayVisible = true
+        binding = OverlayBrainCounterBinding.inflate(LayoutInflater.from(context))
         overlayView = binding?.root
-
-        val r = (config.bgColor shr 16) and 0xFF
-        val g = (config.bgColor shr 8) and 0xFF
-        val b = config.bgColor and 0xFF
-        val alpha = (config.bgOpacity * 255 / 100)
-
-        binding?.root?.setBackgroundColor(Color.argb(alpha, r, g, b))
-        binding?.reelCounter?.apply {
-            visibility = View.VISIBLE
-            text = reelsScrolledThisSession.toString()
-            textSize = config.textSize
-            setTextColor(Color.rgb(
-                (config.textColor shr 16) and 0xFF,
-                (config.textColor shr 8) and 0xFF,
-                config.textColor and 0xFF
-            ))
-            this.alpha = config.textOpacity / 100f
-        }
-        binding?.timeElapsedTxt?.visibility = View.GONE
+        isOverlayVisible = true
+        renderCount()
         setCounterVisible(isVisible)
-
         val dm = context.resources.displayMetrics
         val screenWidth = dm.widthPixels
         val screenHeight = dm.heightPixels
-
-        val layoutParams = LayoutParams(
-            LayoutParams.WRAP_CONTENT,
-            LayoutParams.WRAP_CONTENT,
+        val params = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
             LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
-            LayoutParams.FLAG_NOT_FOCUSABLE or
-                    LayoutParams.FLAG_NOT_TOUCHABLE or
-                    LayoutParams.FLAG_LAYOUT_IN_SCREEN or
-                    LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            PixelFormat.TRANSLUCENT
-        ).apply {
+            LayoutParams.FLAG_NOT_FOCUSABLE or LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+            PixelFormat.TRANSLUCENT).apply {
             gravity = Gravity.TOP or Gravity.START
             x = (screenWidth * config.positionX).toInt()
             y = (screenHeight * config.positionY).toInt()
             layoutInDisplayCutoutMode = LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         }
-
         windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        windowManager?.addView(overlayView, layoutParams)
-
-        overlayView?.viewTreeObserver?.addOnGlobalLayoutListener(object :
-            ViewTreeObserver.OnGlobalLayoutListener {
+        windowManager?.addView(overlayView, params)
+        var downX = 0f; var downY = 0f; var initialX = 0; var initialY = 0
+        binding?.dragHandle?.setOnTouchListener { _, event ->
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    downX = event.rawX; downY = event.rawY
+                    initialX = params.x; initialY = params.y
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    params.x = (initialX + event.rawX - downX).toInt().coerceIn(0, (screenWidth - (overlayView?.width ?: 0)).coerceAtLeast(0))
+                    params.y = (initialY + event.rawY - downY).toInt().coerceIn(0, (screenHeight - (overlayView?.height ?: 0)).coerceAtLeast(0))
+                    windowManager?.updateViewLayout(overlayView, params)
+                }
+                MotionEvent.ACTION_UP -> onPositionChanged(
+                    (params.x + (overlayView?.width ?: 0) / 2f) / screenWidth,
+                    (params.y + (overlayView?.height ?: 0) / 2f) / screenHeight)
+            }
+            true // Consume the entire gesture, never click video controls underneath.
+        }
+        overlayView?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 overlayView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
-                val vw = overlayView?.width ?: 0
-                val vh = overlayView?.height ?: 0
-                layoutParams.x = ((screenWidth * config.positionX) - vw / 2f)
-                    .toInt().coerceIn(0, (screenWidth - vw).coerceAtLeast(0))
-                layoutParams.y = ((screenHeight * config.positionY) - vh / 2f)
-                    .toInt().coerceIn(0, (screenHeight - vh).coerceAtLeast(0))
-                try {
-                    windowManager?.updateViewLayout(overlayView, layoutParams)
-                } catch (_: Exception) {}
+                val vw = overlayView?.width ?: 0; val vh = overlayView?.height ?: 0
+                params.x = (screenWidth * config.positionX - vw / 2f).toInt().coerceIn(0, (screenWidth - vw).coerceAtLeast(0))
+                params.y = (screenHeight * config.positionY - vh / 2f).toInt().coerceIn(0, (screenHeight - vh).coerceAtLeast(0))
+                try { windowManager?.updateViewLayout(overlayView, params) } catch (_: Exception) { }
             }
         })
     }
-
     fun setCounterVisible(isVisible: Boolean) {
-        binding?.root?.alpha = if (isVisible) 1f else 0f
+        binding?.root?.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
-
     fun removeOverlay() {
-        if (overlayView != null && windowManager != null) {
-            windowManager?.removeView(overlayView)
-            overlayView = null
-            binding = null
-            isOverlayVisible = false
-        }
+        if (overlayView != null && windowManager != null) windowManager?.removeView(overlayView)
+        overlayView = null; binding = null; isOverlayVisible = false
     }
 }

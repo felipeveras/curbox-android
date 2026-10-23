@@ -18,6 +18,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.runBlocking
+import neth.iecal.curbox.data.models.BrainCounterState
 import neth.iecal.curbox.CrashLogger
 import neth.iecal.curbox.data.db.AppDatabase
 import neth.iecal.curbox.data.db.ReelStatsDao
@@ -41,7 +46,9 @@ class ReelsCountTracker {
     private lateinit var reelStatsDao: ReelStatsDao
     private lateinit var crashLogger: CrashLogger
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO + CoroutineExceptionHandler { _, error ->
+        if (error !is CancellationException && ::crashLogger.isInitialized) crashLogger.logNonFatalError(if (error is Exception) error else RuntimeException(error))
+    })
     private val mainHandler = Handler(Looper.getMainLooper())
 
     private var isOnDisplayCounter = true
@@ -55,11 +62,51 @@ class ReelsCountTracker {
     private val seenReelsCache = mutableMapOf<String, LruCache<String, Boolean>>()
 
     private var ignored = listOf<String>()
+    private var initialized = false
+    private lateinit var session: BrainCounterState
+    private lateinit var sessionPrefs: android.content.SharedPreferences
+    private var activeShortVideo = false
+    private var lastActivity = 0L
+    private val stateLock = Any()
+
+    private fun displayCount() = synchronized(stateLock) { if (overlayConfig.dailyMode) todayCount else session.count }
+    private fun saveSession() {
+        sessionPrefs.edit().putInt("count", session.count).putLong("last", session.lastSeen)
+            .putLong("outside", session.outsideSince).commit()
+    }
+    private fun updateDay() {
+        val date = TimeTools.getCurrentDate()
+        if (date != lastDateStr) {
+            todayCount = runBlocking(Dispatchers.IO) { reelStatsDao.getCount(date) ?: 0 }
+            lastDateStr = date
+        }
+    }
+    private val heartbeat = object : Runnable {
+        override fun run() {
+            scope.launch {
+                synchronized(stateLock) {
+                    updateDay()
+                    val now = System.currentTimeMillis()
+                    if (now - lastActivity >= 300_000 || now < lastActivity) activeShortVideo = false
+                    if (!activeShortVideo) session.observe(now, lastDateStr, false)
+                    saveSession()
+                    val count = displayCount()
+                    postOverlayUpdate {
+                        overlayManager.reelsScrolledThisSession = count
+                        overlayManager.setCounterVisible(activeShortVideo && shouldShowCounter())
+                    }
+                }
+            }
+            mainHandler.postDelayed(this, 1000)
+        }
+    }
     fun setup(
         service: BaseBlockingService,
         overlayManager: ReelsOverlayManager,
         onReelCounted: (String) -> Unit
     ) {
+        if (initialized) return
+        initialized = true
         this.service = service
         this.overlayManager = overlayManager
         crashLogger = CrashLogger(service)
@@ -70,46 +117,69 @@ class ReelsCountTracker {
             "com.google.android.apps.wellbeing")
         val db = AppDatabase.getInstance(service)
         this.reelStatsDao = db.reelStatsDao()
+        sessionPrefs = service.getSharedPreferences("brain_counter_session", Context.MODE_PRIVATE)
+        session = BrainCounterState(sessionPrefs.getInt("count", 0), sessionPrefs.getLong("last", 0), sessionPrefs.getLong("outside", 0))
+        if (session.outsideSince == 0L) session.outsideSince = session.lastSeen
+        sessionPrefs.all.filterKeys { it.startsWith("comparator:") }.forEach { (key, value) ->
+            if (value is String) lastDynamicText[key.removePrefix("comparator:")] = value
+        }
+        sessionPrefs.all.filterKeys { it.startsWith("seen:") }.forEach { (key, value) ->
+            if (value is Set<*>) {
+                val cache = LruCache<String, Boolean>(50)
+                value.filterIsInstance<String>().takeLast(50).forEach { cache.put(it, true) }
+                seenReelsCache[key.removePrefix("seen:")] = cache
+            }
+        }
+        lastDateStr = TimeTools.getCurrentDate()
+        todayCount = runBlocking(Dispatchers.IO) { reelStatsDao.getCount(lastDateStr) ?: 0 }
+        overlayManager.onPositionChanged = { x, y ->
+            scope.launch { service.dataStoreManager.updateReelCounterOverlayConfig(overlayConfig.copy(positionX = x, positionY = y)) }
+        }
+        mainHandler.post(heartbeat)
 
         scope.launch {
             service.dataStoreManager.settings.collectLatest { settings ->
-                isOnDisplayCounter = settings.isReelCounterOn
-                overlayConfig = settings.reelCounterOverlayConfig
+                synchronized(stateLock) {
+                    isOnDisplayCounter = settings.isReelCounterOn
+                    overlayConfig = settings.reelCounterOverlayConfig
+                }
                 postOverlayUpdate {
-                    overlayManager.binding?.reelCounter?.text = todayCount.toString()
-                    overlayManager.setCounterVisible(shouldShowCounter())
+                    overlayManager.reelsScrolledThisSession = displayCount()
+                    overlayManager.setCounterVisible(activeShortVideo && shouldShowCounter())
                 }
             }
         }
 
-        scope.launch {
-            try {
-                lastDateStr = TimeTools.getCurrentDate()
-                todayCount = reelStatsDao.getCount(lastDateStr) ?: 0
-            } catch (_: Exception) {
-                todayCount = 0
-            }
-        }
     }
 
-    fun onEvent(event: AccessibilityEvent?, dynamicComparator: String?) {
+    fun onEvent(event: AccessibilityEvent?, dynamicComparator: String?) = synchronized(stateLock) {
         try {
             val pkg = event?.packageName?.toString() ?: return
             if (ignored.contains(pkg)) return
+            updateDay()
+            val interactive = (service.getSystemService(Context.POWER_SERVICE) as android.os.PowerManager).isInteractive
+            activeShortVideo = reelData[pkg] != null && dynamicComparator != null && interactive
+            val now = System.currentTimeMillis()
+            if (activeShortVideo) lastActivity = now
+            session.observe(now, lastDateStr, activeShortVideo)
+            saveSession()
+            if (!interactive) { hideReelCounter(); return }
 
             val data = reelData[pkg]
 
             if (data != null) {
                 if (dynamicComparator == null) {
                     lastDynamicText.remove(pkg)
-                    hideReelCounter()
+                    sessionPrefs.edit().remove("comparator:$pkg").commit()
+                    postOverlayUpdate { overlayManager.removeOverlay() }
                     return
                 }
                 if ((event.eventType and data.eventType) == 0) return
                 if (Settings.canDrawOverlays(service) && !overlayManager.isOverlayVisible) {
                     postOverlayUpdate {
-                        if (!overlayManager.isOverlayVisible) {
-                            overlayManager.reelsScrolledThisSession = todayCount
+                        // The event may have been superseded while this render waited on main.
+                        if (activeShortVideo && !overlayManager.isOverlayVisible) {
+                            overlayManager.reelsScrolledThisSession = displayCount()
                             overlayManager.startDisplaying(overlayConfig, shouldShowCounter())
                         }
                     }
@@ -157,12 +227,14 @@ class ReelsCountTracker {
                     if (appCache.get(currentText) == null) {
                         onReelCounted(pkg)
                         appCache.put(currentText, true)
+                        sessionPrefs.edit().putStringSet("seen:$pkg", appCache.snapshot().keys.toSet()).commit()
                     }
                 }
             }
             
             if (isSubstantialChange || currentText.length > previousText.length) {
                 lastDynamicText[pkg] = currentText
+                sessionPrefs.edit().putString("comparator:$pkg", currentText).commit()
             }
         }
     }
@@ -170,30 +242,23 @@ class ReelsCountTracker {
     fun getTodayCount(): Int = todayCount
 
     private fun onReelCounted(packageName: String) {
-        val date = TimeTools.getCurrentDate()
-        if (date != lastDateStr) {
-            todayCount = 0
-            lastDateStr = date
-        }
+        updateDay()
+        val date = lastDateStr
         todayCount++
+        session.increment()
+        saveSession()
         reelCountedCallback(packageName)
-        overlayManager.reelsScrolledThisSession = todayCount
 
         postOverlayUpdate {
             val shouldShow = shouldShowCounter()
             if (shouldShow) {
-                overlayManager.binding?.reelCounter?.apply {
-                    text = todayCount.toString()
-                }
+                overlayManager.reelsScrolledThisSession = displayCount()
             }
             overlayManager.setCounterVisible(shouldShow)
         }
 
-        scope.launch {
-            try {
-                reelStatsDao.upsert(ReelStatsEntity(date = date, count = todayCount))
-            } catch (_: Exception) { }
-        }
+        // Serialize the existing daily analytics write; never let an older async snapshot win.
+        runBlocking(Dispatchers.IO) { reelStatsDao.upsert(ReelStatsEntity(date = date, count = todayCount)) }
 
         service.lastBackPressTimeStamp = SystemClock.uptimeMillis()
     }
@@ -201,11 +266,13 @@ class ReelsCountTracker {
     private val refreshReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
-                INTENT_ACTION_REFRESH_REEL_COUNTER -> setup(
-                    service,
-                    overlayManager,
-                    reelCountedCallback
-                )
+                Intent.ACTION_SCREEN_OFF -> synchronized(stateLock) {
+                    activeShortVideo = false
+                    session.observe(System.currentTimeMillis(), lastDateStr, false)
+                    saveSession()
+                    hideReelCounter()
+                }
+                INTENT_ACTION_REFRESH_REEL_COUNTER -> { /* Settings are already collected once. */ }
             }
         }
     }
@@ -214,6 +281,7 @@ class ReelsCountTracker {
     fun setupReceivers() {
         val filter = IntentFilter().apply {
             addAction(INTENT_ACTION_REFRESH_REEL_COUNTER)
+            addAction(Intent.ACTION_SCREEN_OFF)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             service.registerReceiver(refreshReceiver, filter, RECEIVER_EXPORTED)
@@ -223,6 +291,8 @@ class ReelsCountTracker {
     }
 
     fun onDestroy() {
+        mainHandler.removeCallbacks(heartbeat)
+        scope.cancel()
         postOverlayUpdate {
             overlayManager.removeOverlay()
             overlayManager.binding = null
@@ -235,7 +305,7 @@ class ReelsCountTracker {
     }
 
     private fun shouldShowCounter(): Boolean =
-        isOnDisplayCounter && overlayConfig.shouldShowAtCount(todayCount)
+        isOnDisplayCounter && overlayConfig.shouldShowAtCount(displayCount())
 
     private fun postOverlayUpdate(block: () -> Unit) {
         mainHandler.post {

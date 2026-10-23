@@ -53,10 +53,12 @@ class ReelCounterViewModel(application: Application) : AndroidViewModel(applicat
     private val _canGoNext = MutableLiveData(false)
     val canGoNext: LiveData<Boolean> = _canGoNext
 
-    private val _dateSublabel = MutableLiveData("TOTAL TODAY")
+    private val _dateSublabel = MutableLiveData(getApplication<Application>().getString(neth.iecal.curbox.R.string.total_today))
     val dateSublabel: LiveData<String> = _dateSublabel
 
-    private val dayLabelFormatter = DateTimeFormatter.ofPattern("MMM d")
+    private val dayLabelFormatter = DateTimeFormatter.ofPattern(
+        "MMM d", getApplication<Application>().resources.configuration.locales[0]
+    )
 
     init {
         viewModelScope.launch {
@@ -165,7 +167,11 @@ class ReelCounterViewModel(application: Application) : AndroidViewModel(applicat
         val dbDateStr = date.format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))
         val count = if (isFuture) 0 else reelStatsDao.getCount(dbDateStr) ?: 0
 
-        val sublabel = if (isToday) "TOTAL TODAY" else "TOTAL · ${date.format(dayLabelFormatter)}"
+        val sublabel = if (isToday) {
+            getApplication<Application>().getString(neth.iecal.curbox.R.string.total_today)
+        } else {
+            getApplication<Application>().getString(neth.iecal.curbox.R.string.total_for_period, date.format(dayLabelFormatter))
+        }
 
         withContext(Dispatchers.Main) {
             _selectedDayTotal.value = count

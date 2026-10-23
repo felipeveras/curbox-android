@@ -149,22 +149,36 @@ android {
             }
         }
         debug {
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug"
-            resValue("string", "app_name", "Debug Curbox")
+            if (providers.gradleProperty("curboxTestArm64").orNull == "true") {
+                ndk { abiFilters += "arm64-v8a" }
+            }
+            applicationIdSuffix = ".redirect.debug"
+            versionNameSuffix = "-redirect-debug"
+            resValue("string", "app_name", "Curbox Redirect Test")
         }
-    }
-    compileOptions {
+}
+
+compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
     buildFeatures {
         viewBinding = true
         buildConfig = true
         aidl = true
+    }
+}
+
+// Keep personal test installs updateable without changing release metadata.
+androidComponents {
+    onVariants(selector().withBuildType("debug")) { variant ->
+        variant.outputs.forEach { output -> output.versionCode.set(11) }
     }
 }
 
@@ -223,6 +237,7 @@ dependencies {
     "playstoreImplementation"("com.google.firebase:firebase-messaging")
 
     testImplementation(libs.junit)
+    testImplementation("org.robolectric:robolectric:4.14.1")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 

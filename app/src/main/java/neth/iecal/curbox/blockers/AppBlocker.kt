@@ -69,7 +69,9 @@ class AppBlocker : BaseBlocker() {
         val groupId: String,
         val config: AppGroupConfig,
         val groupPackages: List<String>,
-        val warningConfig: AppBlockerWarningScreenConfig
+        val warningConfig: AppBlockerWarningScreenConfig,
+        val redirectPackage: String?,
+        val redirectAfter5Seconds: Boolean
     )
 
     private val blockedAppsList = ConcurrentHashMap<String, MutableList<AppGroupEntry>>()
@@ -97,6 +99,14 @@ class AppBlocker : BaseBlocker() {
         if (event == null || (event.eventType and TARGET_EVENTS_MASK) == 0) return
 
         val packageName = event.packageName?.toString() ?: return
+
+        // Content events can arrive from an underlying/background window after Home.
+        // They must not press Home again and CLEAR_TASK the running warning. Never
+        // suppress a real foreground retry (or assume foreground when root is null).
+        if (event.eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
+            val foregroundPackage = service.rootInActiveWindow?.packageName?.toString()
+            if (foregroundPackage != null && foregroundPackage != packageName) return
+        }
 
         if (packageName == service.packageName &&
             (isWarningScreenVisible || event.className?.toString() == WarningActivity::class.java.name)
@@ -132,7 +142,7 @@ class AppBlocker : BaseBlocker() {
                 }
 
                 notificationManager.stopTimer()
-                showWarningScreen(packageName, entry.groupId, entry.warningConfig)
+                showWarningScreen(packageName, entry.groupId, entry.warningConfig, entry.redirectPackage, entry.redirectAfter5Seconds)
                 return
             }
 
@@ -163,7 +173,7 @@ class AppBlocker : BaseBlocker() {
 
                 if (remainingUsage <= 0) {
                     notificationManager.stopTimer()
-                    showWarningScreen(packageName, entry.groupId, entry.warningConfig)
+                    showWarningScreen(packageName, entry.groupId, entry.warningConfig, entry.redirectPackage, entry.redirectAfter5Seconds)
                     return
                 }
                 if (remainingUsage < minRemaining) minRemaining = remainingUsage
@@ -259,7 +269,9 @@ class AppBlocker : BaseBlocker() {
                             group.id,
                             config,
                             groupPackages,
-                            group.warningScreenConfig
+                            group.warningScreenConfig,
+                            group.redirectPackage,
+                            group.redirectAfter5Seconds
                         )
                         groupPackages.forEach { pkg ->
                             newBlockedAppsList.getOrPut(pkg) { mutableListOf() }.add(entry)
@@ -420,7 +432,7 @@ class AppBlocker : BaseBlocker() {
         handler.postDelayed(runnable, delayMillis)
     }
 
-    private fun showWarningScreen(packageName: String, groupId: String, warningConfig: AppBlockerWarningScreenConfig) {
+    private fun showWarningScreen(packageName: String, groupId: String, warningConfig: AppBlockerWarningScreenConfig, redirectPackage: String?, redirectAfter5Seconds: Boolean) {
         if (service.isDelayOver(1000)) {
 
             // Remember the warning that was shown so the cooldown intent can read its default duration
@@ -450,6 +462,9 @@ class AppBlocker : BaseBlocker() {
                     putExtra("mode", Constants.WARNING_SCREEN_MODE_APP_BLOCKER)
                     putExtra("result_id", groupId)
                     putExtra("launch_package", packageName)
+                    putExtra("redirect_package", redirectPackage)
+                    putExtra("redirect_auto", redirectAfter5Seconds)
+                    putStringArrayListExtra("redirect_blocked_packages", ArrayList(blockedAppsList.keys))
                     putExtra(
                         "warning_config",
                         Gson().toJson(warningConfig)

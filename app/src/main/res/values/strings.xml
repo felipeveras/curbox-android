@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="redirect_setting">Open instead: %1$s</string>
+    <string name="redirect_off">Off</string>
+    <string name="redirect_picker_title">Choose an app to open instead</string>
+    <string name="redirect_help">Choose an alternative, then turn on the 5 second countdown if you want. Cancel returns to Home. The original app stays blocked. The warning screen must be visible.</string>
+    <string name="redirect_open">Open another app</string>
+    <string name="redirect_open_app">Open %1$s now</string>
+    <string name="redirect_unavailable">This alternative cannot open. Go Home or choose another app in the group settings.</string>
     <string name="focus_mode">Focus Mode</string>
     <string name="add">Add</string>
     <string name="save">Save</string>
@@ -345,19 +352,16 @@
     <string name="position_top">Top</string>
     <string name="position_center">Center</string>
     <string name="position_bottom">Bottom</string>
-
     <string name="default_rules">Default Rules</string>
     <string name="custom_rules">Custom Rules</string>
     <string name="custom_rule_hint">Custom Rule Hint</string>
     <string name="pick_element">Pick Element</string>
-
     <string name="picker_channel_name">Element Picker</string>
     <string name="picker_channel_description">Notifications for the Element Picker</string>
     <string name="picker_notification_title">Element Picker Ready</string>
     <string name="picker_notification_text">Tap to start picking an element</string>
     <string name="picker_active_title">Element Picker Active</string>
     <string name="picker_active_text">Tap elements on screen to select them</string>
-
     <string name="appearance">Appearance</string>
     <string name="reel_counter_appearance">Counter display</string>
     <string name="reel_checkpoints">Show counter only at checkpoints</string>
@@ -392,8 +396,6 @@
     <string name="text_opacity_value">Text Opacity: %d%%</string>
     <string name="position_label">Position</string>
     <string name="position_hint">Drag the indicator to set where the overlay appears</string>
-
-    <!-- Extracted Strings -->
     <string name="dialog_question_mark">?</string>
     <string name="blocking_service_channel_name">Blocking Service</string>
     <string name="blocking_service_channel_description">Running in the background to protect you</string>
@@ -408,13 +410,11 @@
     <string name="notification_title_remaining_usage">Remaining usage before lockdown</string>
     <string name="notification_title_focus_mode_on">Focus Mode is on</string>
     <string name="notification_title_pomodoro_break">Pomodoro break</string>
-
     <string name="nfc_focus_started">Focus started: %1$s (%2$d min)</string>
     <string name="nfc_focus_stopped">Focus stopped</string>
     <string name="nfc_focus_no_group">No focus group found to start</string>
     <string name="nfc_focus_not_exitable">This focus session can\'t be ended early</string>
     <string name="nfc_tag_unrecognized">Unrecognized Curbox NFC tag</string>
-
     <string name="onboarding_non_session_title">Non-session based installation detected</string>
     <string name="onboarding_restricted_settings_desc">Android 13+ restricts Accessibility services for apps installed outside of app stores (like F-Droid or Play Store). To enable permissions, you\'ll need to manually allow \'Restricted settings\' for Curbox. Alternatively, install via the F-Droid app(not website) to avoid this.</string>
     <string name="onboarding_show_tutorial">Show tutorial to enable permissions</string>
@@ -526,7 +526,6 @@
     <string name="create_app_group_title">Create App Group</string>
     <string name="label_on_each_open">On each open</string>
     <string name="label_configure_allowed_schedule">Configure Allowed Schedule</string>
-
     <string name="hint_picker_query">pkg:com.app id:btn</string>
     <string name="hint_picker_label">e.g. Hide Reels, Block Ads...</string>
     <string name="hint_type_sentence">Type the exact sentence above</string>
@@ -548,7 +547,6 @@
     <string name="desc_add_group">Add Group</string>
     <string name="desc_remove">Remove</string>
     <string name="desc_remove_interval">Remove interval</string>
-
     <string name="ascii_coolstars" translatable="false">"\n
 ⠀⠀⠀⠀⠀⠳⣄⣀⠜⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢄⣸⢀⡴⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⡸⠢⣽⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡇⠙⢄⡠⠖⢋⡏⠀⠀⠀⠀⠀⠀⢀⡠⠋⠀⠀⠀⠀⠀⠀⠀⠀⠦⠞⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣤⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠤⡿⣿⡄⠈⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠸⠁⠀⠀⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠃⠀⢠⠀⠀⡜⠀⠀⠀⠀⠀⠀⠀⠨⠀⠁⠁⠈⠀⠁⠒⣄⠀⠀⠀⠀⠀⠀⠀⠀
@@ -837,8 +835,7 @@
 ⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠻⣿⣿⣿⣿⣿⣿⣿⣿⠟
 ⠀⠀⠀⠁⠉⠀⠉⠉⠁⠉⠁⠀⠀⠁⠀⠁⠉⠈⠁⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠁⠀
         "</string>
-
-<string name="angel_fallen" translatable="false">\n"
+    <string name="angel_fallen" translatable="false">\n"
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡴⣶⣆⠀
 ⠀⠀⢀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣞⢓⣿⣿⠀
 ⠀⠀⢸⣿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠏⢉⣾⣿⣿⣆
@@ -1104,7 +1101,6 @@
 ⠀⠀⠀⠀⠀⠀⠀⠀⢠⣶⡦⠄⠀⠉⠉⠉⠙⠛⠻⠿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀
         "</string>
-
     <string name="ascii_star1" translatable="false">"\n
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⠶⢞⣟⣯⠶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⢖⡛⠥⠒⠋⠉⠀⠈⢻⡫⣧⠀⠀⠀⠀⠀⠀⠀⢄⠀⠀⠀⢠⢄⠀⠀⠀⠇⠀⢀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -1163,7 +1159,6 @@
 ⠀⠈⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"</string>
-
     <string name="ascii_blackhole" translatable="false">"\n
     ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -1303,7 +1298,6 @@
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⢀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
         "</string>
-
     <string name="ascii_star4" translatable="false">"\n
 
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠎⠉⢂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -1331,7 +1325,6 @@
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢇⠀⡔⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⢀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
         "</string>
-
     <string name="ascii_star5" translatable="false">"\n
 
 ⣿⣿⣯⠀⠀⠀⠀⠀⠀⣰⢋⣺⢫⣹⢮⡷⠀⣠⡗⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠊⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠱⢤⣉⣁⡴⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿
@@ -1387,7 +1380,7 @@
 ⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⡹⣌⠻⣝⢳⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⠋⠀⣠⠤⠦⣄⠀⢿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿
 ⣿⣿⣿⡷⠀⠀⠀⠀⠀⢀⣠⠶⣛⡓⢶⡄⠀⠠⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢷⣸⡹⢬⣣⠟⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣾⣿⣿⣶⣄⣠⣴⣤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡏⢞⡩⣸⠆⢸⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣾⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
         "</string>
-<string name="ascii_hello" translatable="false">"\n
+    <string name="ascii_hello" translatable="false">"\n
     ⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⠀⠀⠀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⢠⠿⠷⣭⣶⣯⣥⣶⣾⣿⠀⠀⠀⠀⢠⠖⣒⡒⢢⣄⡴⠒⢢⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⢸⠷⣾⣿⡀⢠⡿⠑⠀⠀⢸⣿⡿⡄⠀⠀⠀⢸⢼⣍⠙⠛⠙⢷⡀⠀⣷⠒⠈⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -1448,8 +1441,6 @@
     <string name="reducer_logs">Reducer logs</string>
     <string name="intent_log">Intent log</string>
     <string name="advanced">Advanced</string>
-
-    <!-- UIHider -->
     <string name="delete">Delete</string>
     <string name="ui_hider_title">UI Hider (scripts)</string>
     <string name="ui_hider_desc">Write small scripts to analyze an app\'s UI and draw overlays, press back, or press home. Advanced; for users comfortable with simple scripting and android development. \nWe highly recommend you to join our discord to discover and request more scripts.</string>
@@ -1463,7 +1454,6 @@
     <string name="ui_hider_script_label">SCRIPT</string>
     <string name="ui_hider_source_hint">if app != \"com.instagram.android\" { return }\n…</string>
     <string name="ui_hider_preset_note">This preset comes with the app. You can read it here and turn it on or off, but you cannot change it.</string>
-
     <string name="node_picker_start">Start Node Picker</string>
     <string name="node_picker_channel_name">Node Picker</string>
     <string name="node_picker_notif_title">Node Picker</string>
@@ -1482,7 +1472,6 @@
     <string name="node_picker_hide">Hide</string>
     <string name="node_picker_show">Show panel</string>
     <string name="node_picker_close">Close</string>
-
     <string name="terms_consent_title">One quick thing</string>
     <string name="terms_consent_body">Before you start, please read our Terms and Conditions and Privacy Policy.</string>
     <string name="terms_consent_footer">Tapping \"I agree\" means you accept both.</string>
@@ -1492,8 +1481,6 @@
     <string name="terms_consent_exit">Not now</string>
     <string name="terms_url" translatable="false">https://curbox.app/terms.html</string>
     <string name="privacy_url" translatable="false">https://curbox.app/privacy.html</string>
-
-    <!-- Curbox API -->
     <string name="label_automation">AUTOMATION</string>
     <string name="api_screen_title">Curbox API</string>
     <string name="api_card_subtitle">Let other apps control Curbox</string>
@@ -1506,8 +1493,6 @@
     <string name="api_how_title">How it works</string>
     <string name="api_how_body">When another app requests access, Curbox shows its name and asks for your approval. An approved app can run commands until you remove it. Removing an app ends its access immediately.</string>
     <string name="api_help_popup">Other apps can ask to control Curbox. You allow or deny each one, and you can remove access any time.</string>
-
-    <!-- Service protection (keep alive) -->
     <string name="service_protection_title">Keep Curbox running</string>
     <string name="service_protection_card_subtitle">Help Curbox blockers keep working</string>
     <string name="service_protection_subtitle">Some phones stop Curbox in the background to save battery. These options help keep its blockers running and restart them if they stop. No option can guarantee that Curbox will always run.</string>
@@ -1548,8 +1533,6 @@
     <string name="service_protection_channel_name">Service protection</string>
     <string name="service_protection_down_title">Curbox blockers stopped</string>
     <string name="service_protection_down_text">Tap to turn them back on so your blocks keep working.</string>
-
-    <!-- Tamper protection -->
     <string name="anti_uninstall_title">Tamper protection</string>
     <string name="anti_uninstall_card_subtitle">Make it harder to remove Curbox</string>
     <string name="anti_uninstall_subtitle">When this is on, Curbox cannot be uninstalled until you turn it off the way you chose. Think of it like a seatbelt for your willpower.</string>
@@ -1559,20 +1542,17 @@
     <string name="anti_uninstall_admin_explanation">Curbox uses this to stop itself from being uninstalled while protection is on.</string>
     <string name="anti_uninstall_admin_needed">This permission is required to keep Curbox installed.</string>
     <string name="anti_uninstall_help_popup">When this is on, Curbox cannot be uninstalled and its services cannot be switched off until you turn it off using the method you picked: a password, a wait of a few days, or a one day cooldown you can stop anytime.</string>
-
     <string name="anti_uninstall_status_off_title">Protection is off</string>
     <string name="anti_uninstall_status_off_body">Curbox can be uninstalled right now.</string>
     <string name="anti_uninstall_status_on_title">Protection is on</string>
     <string name="anti_uninstall_status_unlocking_title">Turning off soon</string>
     <string name="anti_uninstall_status_unlocking_body">Protection turns off in %1$s.</string>
-
     <string name="anti_uninstall_summary_password">Your password is required to turn off protection.</string>
     <plurals name="anti_uninstall_summary_timed">
         <item quantity="one">After you request it, protection turns off in %1$d day.</item>
         <item quantity="other">After you request it, protection turns off in %1$d days.</item>
     </plurals>
     <string name="anti_uninstall_summary_cooldown">A one day wait is required to turn off protection. The request can be cancelled at any time.</string>
-
     <string name="anti_uninstall_pick_mode">How should protection be turned off?</string>
     <string name="anti_uninstall_mode_password_title">Password</string>
     <string name="anti_uninstall_mode_password_desc">Turn off protection immediately with a password.</string>
@@ -1582,7 +1562,6 @@
     <string name="anti_uninstall_mode_cooldown_desc">Request to turn off protection, then wait one day. The request can be cancelled at any time.</string>
     <string name="anti_uninstall_days_hint">Days to wait</string>
     <string name="anti_uninstall_days_error">Enter at least one day.</string>
-
     <string name="anti_uninstall_turn_on">Turn on protection</string>
     <string name="anti_uninstall_turn_off">Turn off protection</string>
     <string name="anti_uninstall_keep_on">Keep protection on</string>
@@ -1590,7 +1569,6 @@
     <string name="anti_uninstall_start">Start</string>
     <string name="anti_uninstall_cancel">Cancel</string>
     <string name="anti_uninstall_save">Save</string>
-
     <string name="anti_uninstall_set_password_title">Set a password</string>
     <string name="anti_uninstall_enter_password_title">Enter your password</string>
     <string name="anti_uninstall_password_hint">Password</string>
@@ -1598,17 +1576,13 @@
     <string name="anti_uninstall_password_too_short">Pick a password with at least four letters.</string>
     <string name="anti_uninstall_password_mismatch">The two passwords do not match.</string>
     <string name="anti_uninstall_wrong_password">That password is wrong.</string>
-
     <plurals name="anti_uninstall_timed_confirm">
         <item quantity="one">Protection will turn off on its own in %1$d day. Once the wait starts, it cannot be stopped.</item>
         <item quantity="other">Protection will turn off on its own in %1$d days. Once the wait starts, it cannot be stopped.</item>
     </plurals>
     <string name="anti_uninstall_cooldown_confirm">Protection will turn off in one day. You can stop the wait anytime before then.</string>
-
     <string name="anti_uninstall_remaining">%1$dh %2$dm %3$ds</string>
     <string name="anti_uninstall_remaining_with_days">%1$dd %2$dh %3$dm %4$ds</string>
-
-    <!-- Settings change delay -->
     <string name="change_delay_title">Settings change delay</string>
     <string name="change_delay_card_subtitle">Weaker settings wait before they apply</string>
     <string name="change_delay_subtitle">This helps prevent impulsive changes that weaken your rules. Stricter changes apply immediately. Weaker changes wait for the timer and can be cancelled before they apply.</string>
@@ -1661,14 +1635,10 @@
     <string name="temporary_disable_invalid">Enter a duration from 1 to 43,200 minutes.</string>
     <string name="temporary_disable_until">Temporarily disabled for %1$s</string>
     <string name="temporary_disable_until_manually_enabled">Disabled until you turn it back on</string>
-
-    <!-- Curbox API permission screen -->
     <string name="api_permission_title">Allow access?</string>
     <string name="api_permission_message">%1$s wants to control Curbox. It can start focus sessions, turn blockers on or off, and read your screen time. You can remove this any time.</string>
     <string name="api_permission_allow">Allow</string>
     <string name="api_permission_deny">Deny</string>
-
-    <!-- Common / shared -->
     <string name="common_back">Back</string>
     <string name="common_mins">mins</string>
     <string name="common_continue">Continue</string>
@@ -1688,8 +1658,6 @@
     <string name="group_usage_left">%1$s left in this schedule</string>
     <string name="warning_show_on_each_open">Show this screen each time I open the selected apps</string>
     <string name="warning_current_app_session">Current app session</string>
-
-    <!-- Sync account -->
     <string name="account_sync_title">Sync across my devices</string>
     <string name="account_sync_desc">I keep your settings and time stats in step on every browser and phone. Everything is locked with a key only you hold, so no one else can read it.</string>
     <string name="account_hint_email">Email</string>
@@ -1765,17 +1733,11 @@
     <string name="account_err_no_network">I cannot reach the internet right now. Check your connection and try again.</string>
     <string name="account_err_google">Google sign in did not work. Please try again or use email.</string>
     <string name="account_err_google_not_configured">Google sign in is not ready yet. Please use email for now.</string>
-
-    <!-- Language -->
     <string name="language">Language</string>
-
-    <!-- Info screen -->
     <string name="info_official_documentation">Official Documentation</string>
     <string name="crash_logs_title">Crash Logs</string>
     <string name="crash_logs_none_available">No crash logs available.</string>
     <string name="crash_logs_read_error">Could not read crash logs.</string>
-
-    <!-- Onboarding permissions -->
     <string name="onboarding_app_limit_group_name">%1$s Limits</string>
     <string name="onboarding_perm_overlay_title">Screen Overlay</string>
     <string name="onboarding_perm_overlay_rationale">Curbox needs this to show a calm pause screen on top of distracting apps when you open them. Without it, Curbox cannot place anything over those apps to help you stop and think.</string>
@@ -1795,8 +1757,6 @@
     <string name="onboarding_need_more_permissions">I still need more permissions</string>
     <string name="screen_time_hours">%1$d hrs</string>
     <string name="screen_time_reality">That is %1$d full weeks of your life staring at a screen per year.</string>
-
-    <!-- Focus setup -->
     <string name="focus_unknown_group">Unknown Group</string>
     <string name="focus_delete_group_title">Delete Focus Group</string>
     <string name="focus_delete_group_message">Are you sure you want to delete this group? All associated focus statistics will also be deleted.</string>
@@ -1807,8 +1767,6 @@
     <string name="focus_block_notice_title">Website Blocking Notice</string>
     <string name="focus_block_notice_message">You have set some websites to be blocked, but no browser is in your \'Blocked Apps\' list. \n\nNote that website blocking only works on supported browsers (like Chrome or Firefox). Any other browser will still be able to access these websites. Consider blocking unsupported browsers if needed.</string>
     <string name="focus_add_websites_title">Add Websites/Keywords</string>
-
-    <!-- Warning screen config -->
     <string name="warning_fixed_unlock_duration">Fixed Unlock Duration: %1$d mins</string>
     <string name="warning_fixed_unlock_duration_lower">Fixed unlock duration: %1$d mins</string>
     <string name="warning_wait_before_unlock">Wait before unlocking: %1$ds</string>
@@ -1918,32 +1876,22 @@
     <string name="focus_nfc_load_title">Tap a tag to load</string>
     <string name="focus_nfc_loaded">Loaded values from tag</string>
     <string name="focus_nfc_load_invalid">That tag is not a Curbox focus tag</string>
-
-    <!-- Group edit titles -->
     <string name="app_group_edit_title">Edit App Group</string>
     <string name="grayscale_group_edit_title">Edit Grayscale Group</string>
     <string name="autodnd_group_edit_title">Edit Auto DND Group</string>
     <string name="keyword_group_edit_title">Edit Keyword Group</string>
     <string name="autodnd_scheduled">Scheduled</string>
-
-    <!-- Keyword import/export -->
     <string name="keyword_imported_count">Imported %1$d keywords</string>
     <string name="keyword_no_new_import">No new keywords to import</string>
     <string name="keyword_import_failed">Failed to import keywords</string>
     <string name="keyword_export_success">Keywords exported successfully</string>
     <string name="keyword_export_failed">Failed to export keywords</string>
     <string name="keyword_add_at_least_one">Add at least one keyword</string>
-
-    <!-- Settings toasts -->
     <string name="usage_disable_everyday_granular">Disable everyday to add granular changes</string>
     <string name="time_disable_everyday_granular">Disable everyday to set granular ranges</string>
     <string name="time_overnight_split">Overnight range split into two (up to midnight and from midnight)</string>
     <string name="uihider_enter_package">Enter a package name</string>
-
-    <!-- Intents log -->
     <string name="intent_unlocked_for">Unlocked for %1$d mins</string>
-
-    <!-- Usage screen -->
     <string name="usage_export_daily_breakdown">Daily Breakdown (Time Series)</string>
     <string name="usage_export_total_summary">Total Summary</string>
     <string name="usage_export_both">Both</string>
@@ -1961,8 +1909,6 @@
     <string name="create_new_rule_title">Create New Rule</string>
     <string name="synced_browsing">Synced browsing</string>
     <string name="synced_other_devices">OTHER DEVICES</string>
-
-    <!-- Select apps -->
     <string name="app_category_audio">Audio</string>
     <string name="app_category_games">Games</string>
     <string name="app_category_images">Images</string>
@@ -1978,8 +1924,6 @@
     <string name="select_apps_import_from_group">── Import from Group ──</string>
     <string name="select_apps_custom_hint">com.real.android.app</string>
     <string name="select_apps_add_custom_title">Add a custom package</string>
-
-    <!-- Service notifications -->
     <string name="notification_remaining_usage_lockdown">Remaining usage before lockdown</string>
     <string name="notification_remaining_usage_reels_lockdown">Remaining usage before reels lockdown</string>
     <string name="usage_tracking_settings">Usage tracking</string>
@@ -1987,8 +1931,6 @@
     <string name="app_usage_tracking">App Usage Tracking</string>
     <string name="website_usage_tracking">Website Usage Tracking</string>
     <string name="usage_tracking_disabled_warning">Warning: Usage Based blocking options will not work for a tracking type while it is turned off.</string>
-
-    <!-- Units -->
     <string name="unit_minutes">Minutes</string>
     <string name="unit_hours">Hours</string>
     <string name="unit_days">Days</string>
@@ -2008,4 +1950,76 @@
     <string name="onboarding_finish_failed">Could not finish setup. Please try again.</string>
     <string name="usage_select_background_art">Select background art</string>
     <string name="usage_background_art_random">Random</string>
+    <string name="warning_scan_qr_prompt">Scan a QR code to unlock</string>
+    <string name="crash_logs_share_subject">Curbox crash logs</string>
+    <string name="crash_logs_share_title">Share crash logs</string>
+    <string name="warning_dynamic_time">Dynamic time</string>
+    <string name="remove">Remove</string>
+    <string name="limit_every_day">Same limit every day</string>
+    <string name="day_sunday">Sunday</string>
+    <string name="day_monday">Monday</string>
+    <string name="day_tuesday">Tuesday</string>
+    <string name="day_wednesday">Wednesday</string>
+    <string name="day_thursday">Thursday</string>
+    <string name="day_friday">Friday</string>
+    <string name="day_saturday">Saturday</string>
+    <string-array name="weekdays_sunday_first">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+    <string-array name="weekdays_monday_first">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+    <string-array name="usage_days_monday_first">
+        <item>Same limit every day</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+    <string name="reducers_help_popup">Blocker tools and stimulation reducers help you regain focus.</string>
+    <string name="app_blocker_help_popup">Block distracting apps and regain control over your screen time.</string>
+    <string name="focus_help_popup">Focus mode helps you stay away from distractions for a set period of time.</string>
+    <string name="reel_counter_help_popup">Track how many short videos you watch to build better digital habits.</string>
+    <string name="grayscale_help_popup">Reduce visual stimulation by turning your screen grayscale for specific apps.</string>
+    <string name="ui_hider_help_popup">Hide specific UI elements within apps using custom scripts.</string>
+    <string name="mindful_message_default">Mindful message</string>
+    <string name="warning_qr_key_label">QR/Barcode</string>
+    <string name="warning_nfc_key_label">NFC tag</string>
+    <string name="warning_qr_scan_prompt">Scan a QR code or barcode to unlock the blocker later. You can use almost any code, even one from a product box at home, so there’s no need to print a new one!</string>
+    <string name="sync_scan_pairing_code">Point at the pairing code</string>
+    <string name="uihider_preset_ig_feed">Instagram: hide home feed except following tab</string>
+    <string name="uihider_preset_ig_explore">Instagram: hide explore feed</string>
+    <string name="uihider_preset_yt_video">YouTube: hide everything except the video</string>
+    <string name="uihider_preset_yt_results">YouTube: hide feed, allow search results</string>
+    <string name="uihider_preset_x_feed">X: hide “For You”, allow Following</string>
+    <string name="uihider_preset_snapchat">Snapchat: hide stories</string>
+    <string name="uihider_preset_pinterest">Pinterest: hide home feed</string>
+<string name="redirect_countdown">Opening in %1$d…</string>
+    <string name="redirect_title">Let’s go to %1$s</string>
+    <string name="redirect_selected_app">Selected app</string>
+    <string name="redirect_section_title">Choose a better next step</string>
+    <string name="redirect_auto_setting">Open automatically after 5 seconds</string>
+    <string name="redirect_search_hint">Search name or package</string>
+    <string name="redirect_search_empty">No apps found. Try another name.</string>
+    <string name="redirect_cancel_home">Cancel and go Home</string>
+    <string name="brain_daily_mode">Count per day</string>
+    <string name="brain_mode_help">Off: count this session. A session ends after 5 minutes outside short videos or without detected activity, including screen off. Switching apps within that time keeps the session. On: count today, resetting at local midnight. Stages: 0 to 9, 10 to 24, 25 to 49, 50 to 99, 100 or more. This is a playful reminder, not a medical assessment.</string>
+    <string name="brain_counter_description">%1$d short videos. Brain: %2$s. Drag to move.</string>
+    <string-array name="brain_stages"><item>healthy</item><item>softening</item><item>melting</item><item>almost a puddle</item><item>puddle with eyes</item></string-array>
+    <string name="brain_close">Close counter until you leave short videos</string>
 </resources>

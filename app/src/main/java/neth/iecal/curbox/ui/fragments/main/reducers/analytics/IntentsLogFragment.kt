@@ -20,7 +20,7 @@ class IntentsLogFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: IntentsLogViewModel by viewModels {
-        IntentsLogViewModelFactory(AppDatabase.getInstance(requireContext()).intentLogDao())
+        IntentsLogViewModelFactory(AppDatabase.getInstance(requireContext()).intentLogDao(), requireContext())
     }
 
     override fun onCreateView(

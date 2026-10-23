@@ -195,7 +195,7 @@ class FocusFragment : Fragment() {
         }
 
         binding.btnHelp.setOnClickListener {
-            ViewUtils.showHelpPopup(it, "Focus mode helps you stay away from distractions for a set period of time.", "https://curbox.app/docs/focus/focus-mode/")
+            ViewUtils.showHelpPopup(it, getString(R.string.focus_help_popup), "https://curbox.app/docs/focus/focus-mode/")
         }
 
         binding.btnWriteFocusNfc.setOnClickListener {

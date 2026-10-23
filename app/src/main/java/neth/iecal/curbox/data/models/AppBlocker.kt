@@ -8,6 +8,8 @@ data class AppGroup(
     val isActive: Boolean = false,
     /** Non-zero only while the group is using the opt-in temporary-disable escape hatch. */
     val temporarilyDisabledUntilMs: Long = 0L,
+    val redirectPackage: String? = null,
+    val redirectAfter5Seconds: Boolean = false,
     val warningScreenConfig : AppBlockerWarningScreenConfig = AppBlockerWarningScreenConfig(),
     // Kept only so settings written by older versions can be migrated.
     @Deprecated("Use config")

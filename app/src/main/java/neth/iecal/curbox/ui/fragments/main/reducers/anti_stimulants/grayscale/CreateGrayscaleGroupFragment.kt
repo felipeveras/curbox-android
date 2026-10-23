@@ -121,7 +121,7 @@ class CreateGrayscaleGroupFragment : Fragment() {
         binding.fabSaveGroup.setOnClickListener {
             val name = binding.etGroupName.text.toString().trim()
             if (name.isEmpty()) {
-                binding.etGroupName.error = "Please enter a group name"
+                binding.etGroupName.error = getString(R.string.enter_group_name)
                 return@setOnClickListener
             }
             
