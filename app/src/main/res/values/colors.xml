@@ -146,7 +146,7 @@
     <color name="md_theme_surfaceContainerHighest_highContrast">#303634</color>
     <color name="glass_surface">#B3FFFFFF</color>
     <color name="glass_stroke">#1A000000</color>
-    <color name="glass_nav">#F2FFFFFF</color>
+    <color name="glass_nav">#FFFFFFFF</color>
     <color name="glow_primary">#6660A5FA</color>
     <color name="aurora_blue">#332563EB</color>
     <color name="aurora_indigo">#1F4F46E5</color>
