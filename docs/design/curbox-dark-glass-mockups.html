@@ -1,0 +1,244 @@
+<title>Curbox Dark Glass</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: moodboard + palette strip, then a row of phone mockups (Home, Groups, Onboarding, Block overlay) */
+:root {
+  --bg: #0b0d12;
+  --bg-2: #11141b;
+  --ink: #e8ebf2;
+  --ink-2: #9aa3b2;
+  --ink-3: #636c7b;
+  --blue: #3b82f6;
+  --glow: #60a5fa;
+  --indigo: #4f46e5;
+  --red: #ef4444;
+  --green: #34d399;
+  --glass: rgba(255,255,255,.07);
+  --glass-2: rgba(255,255,255,.11);
+  --edge: rgba(255,255,255,.14);
+  --font-ui: "Inter", system-ui, sans-serif;
+  --font-display: "Sora", "Inter", system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.5;
+  padding-block: 40px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
+h1 { font-family: var(--font-display); font-size: clamp(30px, 5vw, 48px); line-height: 1.05; margin: 0 0 10px; letter-spacing: -.02em; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-size: 20px; margin: 0 0 6px; letter-spacing: -.01em; }
+.lede { max-width: 62ch; color: var(--ink-2); margin: 0; }
+.eyebrow { font-size: 13px; color: var(--ink-3); margin-bottom: 12px; }
+
+/* palette */
+.pal { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
+.sw { border-radius: 16px; border: 1px solid var(--edge); overflow: hidden; background: var(--bg-2); }
+.sw i { display: block; height: 64px; }
+.sw b { display: block; padding: 10px 12px 0; font-size: 13px; font-weight: 600; }
+.sw span { display: block; padding: 0 12px 10px; font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.note { padding: 18px; border-radius: 20px; background: var(--glass); border: 1px solid var(--edge); }
+.note p { margin: 0; color: var(--ink-2); font-size: 14px; }
+
+/* phones */
+.phones { display: flex; gap: 28px; overflow-x: auto; padding: 8px 4px 24px; scroll-snap-type: x proximity; }
+.cap { text-align: center; margin-top: 14px; font-size: 13px; color: var(--ink-2); }
+.cap b { display: block; color: var(--ink); font-family: var(--font-display); font-size: 15px; }
+.fig { flex: 0 0 auto; scroll-snap-align: start; }
+.phone {
+  width: 300px; height: 620px; border-radius: 40px; position: relative; overflow: hidden;
+  border: 1px solid var(--edge);
+  background:
+    radial-gradient(120% 60% at 85% -5%, rgba(79,70,229,.45), transparent 60%),
+    radial-gradient(90% 50% at 0% 25%, rgba(59,130,246,.38), transparent 62%),
+    radial-gradient(80% 40% at 100% 100%, rgba(96,165,250,.18), transparent 60%),
+    #0b0d12;
+  box-shadow: 0 30px 70px -30px rgba(59,130,246,.45), 0 0 0 6px #07080b;
+}
+.status { display: flex; justify-content: space-between; padding: 14px 24px 0; font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.screen { padding: 14px 18px 0; display: flex; flex-direction: column; gap: 14px; }
+.glass { background: var(--glass); border: 1px solid var(--edge); border-radius: 24px; backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%); }
+.top { display: flex; justify-content: space-between; align-items: center; }
+.brand { font-family: var(--font-display); font-weight: 600; font-size: 20px; letter-spacing: -.02em; }
+.pill { font-size: 11px; padding: 5px 10px; border-radius: 99px; background: var(--glass-2); border: 1px solid var(--edge); color: var(--ink-2); }
+.pill.ok { color: var(--green); }
+.hero { display: flex; flex-direction: column; align-items: center; padding-top: 2px; }
+.ring { position: relative; width: 190px; height: 190px; }
+.ring svg { width: 100%; height: 100%; transform: rotate(135deg); filter: drop-shadow(0 0 14px rgba(96,165,250,.55)); }
+.ring .mid { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.big { font-family: var(--font-display); font-size: 40px; font-weight: 300; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.sub { font-size: 12px; color: var(--ink-2); margin-top: 8px; }
+.chips { display: flex; justify-content: center; margin-top: -4px; }
+.chip { display: flex; flex-direction: column; align-items: center; min-width: 86px; padding: 2px 10px; font-variant-numeric: tabular-nums; }
+.chip + .chip { border-left: 1px solid var(--edge); }
+.chip b { font-size: 16px; font-weight: 600; }
+.chip span { font-size: 10px; color: var(--ink-2); }
+.card { padding: 14px 16px; }
+.card h3 { margin: 0 0 2px; font-size: 14px; font-weight: 600; }
+.card p { margin: 0; font-size: 12px; color: var(--ink-2); }
+.btn { display: block; text-align: center; padding: 11px; border-radius: 99px; font-weight: 600; font-size: 13px; background: linear-gradient(180deg, #4f8ff7, #3b82f6); color: #fff; box-shadow: 0 6px 22px -6px rgba(59,130,246,.9), inset 0 1px 0 rgba(255,255,255,.35); margin-top: 12px; }
+.btn.ghost { background: var(--glass-2); box-shadow: none; border: 1px solid var(--edge); color: var(--ink); }
+.nav { position: absolute; left: 22px; right: 22px; bottom: 18px; display: flex; justify-content: space-around; padding: 8px; border-radius: 99px; background: rgba(20,24,33,.55); border: 1px solid var(--edge); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); box-shadow: 0 14px 40px -12px rgba(0,0,0,.7); }
+.nav div { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 14px; border-radius: 99px; font-size: 10px; color: var(--ink-2); }
+.nav div.on { background: rgba(255,255,255,.1); color: #fff; }
+.nav svg { width: 20px; height: 20px; }
+/* groups */
+.row { display: flex; align-items: center; gap: 12px; padding: 14px; }
+.ico { width: 40px; height: 40px; border-radius: 14px; display: grid; place-items: center; flex: 0 0 auto; }
+.row .t { flex: 1; min-width: 0; }
+.row .t b { display: block; font-size: 14px; }
+.row .t span { font-size: 12px; color: var(--ink-2); }
+.tag { font-size: 10px; padding: 3px 9px; border-radius: 99px; background: rgba(59,130,246,.18); color: var(--glow); border: 1px solid rgba(96,165,250,.3); }
+.tag.off { background: var(--glass); color: var(--ink-3); border-color: var(--edge); }
+.title { font-family: var(--font-display); font-size: 26px; letter-spacing: -.02em; margin: 6px 0 0; }
+.fab { position: absolute; right: 22px; bottom: 92px; width: 52px; height: 52px; border-radius: 18px; display: grid; place-items: center; background: linear-gradient(180deg, #4f8ff7, #3b82f6); box-shadow: 0 10px 28px -6px rgba(59,130,246,.9); font-size: 26px; }
+/* onboarding */
+.ob { padding: 28px 24px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; gap: 14px; padding-bottom: 40px; position: relative; }
+.orbwrap { position: absolute; top: 70px; left: 50%; width: 190px; height: 190px; margin-left: -95px; filter: drop-shadow(0 0 28px rgba(59,130,246,.7)); }
+.orb { width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #d6e6ff, #3b82f6 45%, #1e1b4b 85%); -webkit-mask: radial-gradient(circle, #000 1.9px, transparent 2.5px) 0 0/9px 9px; mask: radial-gradient(circle, #000 1.9px, transparent 2.5px) 0 0/9px 9px; }
+.ob h4 { font-family: var(--font-display); font-size: 31px; line-height: 1.05; letter-spacing: -.03em; margin: 0; text-wrap: balance; }
+.ob p { margin: 0; color: var(--ink-2); font-size: 14px; }
+/* overlay */
+.behind { position: absolute; inset: 0; padding: 60px 18px; display: flex; flex-direction: column; gap: 10px; filter: blur(2px); opacity: .55; }
+.behind div { height: 70px; border-radius: 16px; background: linear-gradient(90deg, #7f1d1d, #be185d); }
+.behind div:nth-child(2) { background: linear-gradient(90deg,#1d4ed8,#0ea5e9); height: 110px; }
+.behind div:nth-child(3) { background: linear-gradient(90deg,#065f46,#84cc16); }
+.sheet { position: absolute; left: 16px; right: 16px; top: 150px; padding: 26px 20px 20px; text-align: center; border-radius: 30px; background: rgba(18,22,31,.55); border: 1px solid var(--edge); backdrop-filter: blur(26px) saturate(150%); -webkit-backdrop-filter: blur(26px) saturate(150%); box-shadow: 0 30px 70px -20px rgba(0,0,0,.8); }
+.sheet .big { font-size: 46px; }
+.sheet h5 { margin: 14px 0 4px; font-family: var(--font-display); font-size: 19px; letter-spacing: -.01em; }
+.sheet p { margin: 0; color: var(--ink-2); font-size: 13px; }
+.bar { height: 6px; border-radius: 9px; background: var(--glass-2); margin-top: 14px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 62%; border-radius: 9px; background: linear-gradient(90deg, var(--indigo), var(--glow)); }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Issue #1, redesign do app</div>
+    <h1>Curbox Dark Glass</h1>
+    <p class="lede">Proposta visual para aprovar antes de mexer no código: fundo escuro com aurora azul, cards de vidro, números grandes e barra inferior flutuante. As referências são o Opal e o tema "Modern Minimal" com o azul #3b82f6.</p>
+  </header>
+
+  <section>
+    <div class="eyebrow">Paleta</div>
+    <div class="pal">
+      <div class="sw"><i style="background:#0b0d12"></i><b>Fundo</b><span>#0B0D12</span></div>
+      <div class="sw"><i style="background:#171717"></i><b>Superfície sólida</b><span>#171717</span></div>
+      <div class="sw"><i style="background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.14))"></i><b>Vidro</b><span>branco 7–11% + borda 14%</span></div>
+      <div class="sw"><i style="background:#3b82f6"></i><b>Primária</b><span>#3B82F6</span></div>
+      <div class="sw"><i style="background:#60a5fa"></i><b>Brilho</b><span>#60A5FA</span></div>
+      <div class="sw"><i style="background:#4f46e5"></i><b>Aurora</b><span>#4F46E5</span></div>
+      <div class="sw"><i style="background:#ef4444"></i><b>Destrutivo</b><span>#EF4444</span></div>
+      <div class="sw"><i style="background:#34d399"></i><b>Sucesso</b><span>#34D399</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Telas</div>
+    <div class="phones">
+
+      <div class="fig">
+        <div class="phone">
+          <div class="status"><span>9:41</span><span>5G ▮▮▮</span></div>
+          <div class="screen">
+            <div class="top"><span class="brand">Curbox</span><span class="pill ok">Serviço ativo</span></div>
+            <div class="hero">
+              <div class="ring">
+                <svg viewBox="0 0 200 200" fill="none">
+                  <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#60a5fa"/></linearGradient></defs>
+                  <path d="M184 100 A84 84 0 1 1 100 16" stroke="rgba(255,255,255,.09)" stroke-width="12" stroke-linecap="round"/>
+                  <path d="M184 100 A84 84 0 0 1 16.3 106.6" stroke="url(#g1)" stroke-width="12" stroke-linecap="round"/>
+                </svg>
+                <div class="mid"><div class="big">2h 14m</div><div class="sub">Tela hoje</div></div>
+              </div>
+            </div>
+            <div class="chips">
+              <div class="chip"><b>48</b><span>Reels</span></div>
+              <div class="chip"><b>12</b><span>Bloqueios</span></div>
+              <div class="chip"><b>3</b><span>Foco</span></div>
+            </div>
+            <div class="glass card">
+              <h3>Meta diária: 3h 30m</h3>
+              <p>Faltam 1h 16m. Você está 22% abaixo de ontem.</p>
+              <div class="bar"><i></i></div>
+            </div>
+          </div>
+          <div class="nav">
+            <div class="on"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>Início</div>
+            <div><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>Grupos</div>
+            <div><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l12 7-12 7z"/></svg>Foco</div>
+            <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>Ajustes</div>
+          </div>
+        </div>
+        <div class="cap"><b>Início</b>Anel de tempo de tela, métricas e meta</div>
+      </div>
+
+      <div class="fig">
+        <div class="phone">
+          <div class="status"><span>9:41</span><span>5G ▮▮▮</span></div>
+          <div class="screen">
+            <div class="top"><h2 class="title">Grupos</h2><span class="pill">3 ativos</span></div>
+            <div class="glass row"><div class="ico" style="background:rgba(239,68,68,.18);color:#f87171">▶</div><div class="t"><b>Vídeos curtos</b><span>Reels, Shorts, TikTok</span></div><span class="tag">Ativo</span></div>
+            <div class="glass row"><div class="ico" style="background:rgba(79,70,229,.25);color:#a5b4fc">◎</div><div class="t"><b>Redes sociais</b><span>Limite de 45 min/dia</span></div><span class="tag">Ativo</span></div>
+            <div class="glass row"><div class="ico" style="background:rgba(52,211,153,.18);color:#6ee7b7">⌘</div><div class="t"><b>Jogos</b><span>Bloqueado 22h–7h</span></div><span class="tag">Ativo</span></div>
+            <div class="glass row"><div class="ico" style="background:rgba(255,255,255,.08);color:#9aa3b2">☰</div><div class="t"><b>Palavras-chave</b><span>8 termos</span></div><span class="tag off">Pausado</span></div>
+          </div>
+          <div class="fab">+</div>
+          <div class="nav">
+            <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8"/></svg>Início</div>
+            <div class="on"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>Grupos</div>
+            <div><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l12 7-12 7z"/></svg>Foco</div>
+            <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>Ajustes</div>
+          </div>
+        </div>
+        <div class="cap"><b>Grupos</b>Cards de vidro com status em chips</div>
+      </div>
+
+      <div class="fig">
+        <div class="phone">
+          <div class="orbwrap"><div class="orb"></div></div>
+          <div class="ob">
+            <h4>Seu celular foi feito para prender você.</h4>
+            <p>Você não é preguiçoso. Você enfrenta algoritmos criados por milhares de psicólogos para manter você rolando.</p>
+            <div class="btn">Aliviar minha força de vontade</div>
+            <div class="btn ghost" style="margin-top:0">Como funciona</div>
+          </div>
+        </div>
+        <div class="cap"><b>Onboarding</b>Esfera de pontos, como o cérebro do app atual</div>
+      </div>
+
+      <div class="fig">
+        <div class="phone">
+          <div class="behind"><div></div><div></div><div></div><div></div></div>
+          <div class="sheet">
+            <div class="big">5</div>
+            <div class="sub">segundos</div>
+            <h5>Vamos respirar antes de abrir</h5>
+            <p>Instagram está no grupo Redes sociais. Você já usou 38 min hoje.</p>
+            <div class="btn">Voltar para o início</div>
+            <div class="btn ghost">Abrir mesmo assim</div>
+          </div>
+        </div>
+        <div class="cap"><b>Aviso de bloqueio</b>Vidro com desfoque real no Android 12+</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Como vira código</div>
+    <div class="notes">
+      <div class="note"><h2>Tema</h2><p>Cores e estilos em <code>colors.xml</code> e <code>themes.xml</code>. Os 90 layouts herdam sem edição manual.</p></div>
+      <div class="note"><h2>Vidro</h2><p>Android 12+ usa desfoque real em diálogos, barra e overlays. No Android 8–11 entra translúcido com borda e brilho.</p></div>
+      <div class="note"><h2>Sem Compose</h2><p>Tudo em Views e XML, como pede o <code>agents.md</code>. O anel é uma View customizada leve.</p></div>
+    </div>
+  </section>
+</div>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@300;400;600&display=swap">
