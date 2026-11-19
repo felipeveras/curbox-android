@@ -39,4 +39,17 @@
         <item name="fontWeight">300</item>
         <item name="android:letterSpacing">-0.03</item>
     </style>
+    <style name="Widget.Curbox.Slider" parent="Widget.Material3.Slider">
+        <item name="tickVisible">false</item>
+        <item name="trackHeight">6dp</item>
+        <item name="thumbHeight">28dp</item>
+        <item name="thumbWidth">28dp</item>
+        <item name="thumbColor">@android:color/white</item>
+        <item name="thumbElevation">2dp</item>
+        <item name="thumbTrackGapSize">0dp</item>
+        <item name="trackStopIndicatorSize">0dp</item>
+        <item name="trackInsideCornerSize">3dp</item>
+        <item name="haloColor">@color/glow_primary</item>
+        <item name="trackColorInactive">@color/ring_track</item>
+    </style>
 </resources>

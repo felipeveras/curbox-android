@@ -2011,4 +2011,6 @@
     <string name="brain_counter_description">%1$d vídeos curtos. Cérebro: %2$s. Arraste para mover.</string>
     <string-array name="brain_stages"><item>saudável</item><item>amolecendo</item><item>derretendo</item><item>quase uma poça</item><item>poça com olhos</item></string-array>
     <string name="brain_close">Fechar contador até sair dos vídeos curtos</string>
+    <string name="focus_preset_minutes">minutos</string>
+    <string name="focus_preset_hours">horas</string>
 </resources>

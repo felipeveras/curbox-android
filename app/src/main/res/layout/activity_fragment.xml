@@ -16,14 +16,14 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         style="@style/Widget.Curbox.FloatingNav"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_width="280dp"
+        android:layout_height="64dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginHorizontal="20dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        app:itemIconSize="22dp"
+        app:itemIconSize="24dp"
+        app:labelVisibilityMode="unlabeled"
         app:paddingBottomSystemWindowInsets="false"
-        app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu" />
 
 </RelativeLayout>

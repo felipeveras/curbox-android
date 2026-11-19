@@ -65,6 +65,7 @@ class FocusFragment : Fragment() {
                         val isRunning = groupId != null
                         b.tvActiveGroup.visibility = if (isRunning) View.VISIBLE else View.GONE
                         b.btnGoToStats.visibility = if (isRunning) View.GONE else View.VISIBLE
+                        b.llPresets.visibility = if (isRunning) View.GONE else View.VISIBLE
                         b.tvSeconds.text = if (isRunning) "" else getString(R.string.common_mins)
 
                         if (isRunning) {
@@ -396,6 +397,13 @@ class FocusFragment : Fragment() {
         }
 
         snapHelper.attachToRecyclerView(bInitial.rvRuler)
+
+        listOf(bInitial.preset15 to 15, bInitial.preset45 to 45, bInitial.preset90 to 90, bInitial.preset180 to 180)
+            .forEach { (tile, minutes) ->
+                tile.setOnClickListener {
+                    if (viewModel.currentRunningFocus.value.first == null) scrollToMinute(minutes, smooth = false)
+                }
+            }
 
         bInitial.rvRuler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

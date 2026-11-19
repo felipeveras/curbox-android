@@ -2022,4 +2022,6 @@
     <string name="brain_counter_description">%1$d short videos. Brain: %2$s. Drag to move.</string>
     <string-array name="brain_stages"><item>healthy</item><item>softening</item><item>melting</item><item>almost a puddle</item><item>puddle with eyes</item></string-array>
     <string name="brain_close">Close counter until you leave short videos</string>
+    <string name="focus_preset_minutes">minutes</string>
+    <string name="focus_preset_hours">hours</string>
 </resources>

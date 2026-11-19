@@ -57,6 +57,7 @@
         <item name="materialButtonStyle">@style/Widget.Curbox.Button</item>
         <item name="chipStyle">@style/Widget.Curbox.Chip</item>
         <item name="bottomNavigationStyle">@style/Widget.Curbox.FloatingNav</item>
+        <item name="sliderStyle">@style/Widget.Curbox.Slider</item>
     </style>
 
 </resources>

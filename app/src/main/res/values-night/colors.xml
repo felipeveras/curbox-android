@@ -149,7 +149,7 @@
     <color name="error_color">#F44336</color>
     <color name="glass_surface">#14FFFFFF</color>
     <color name="glass_stroke">#24FFFFFF</color>
-    <color name="glass_nav">#FF171A1F</color>
+    <color name="glass_nav">#C7171A1F</color>
     <color name="glow_primary">#6660A5FA</color>
     <color name="aurora_blue">#473B82F6</color>
     <color name="aurora_indigo">#296366F1</color>
