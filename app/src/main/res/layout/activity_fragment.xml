@@ -13,17 +13,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
-        style="@style/Widget.Curbox.FloatingNav"
+    <eightbitlab.com.blurview.BlurView
+        android:id="@+id/nav_glass"
         android:layout_width="280dp"
         android:layout_height="64dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        app:itemIconSize="24dp"
-        app:labelVisibilityMode="unlabeled"
-        app:paddingBottomSystemWindowInsets="false"
-        app:menu="@menu/bottom_nav_menu" />
+        android:background="@drawable/bg_glass_nav"
+        app:blurOverlayColor="@color/glass_nav">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            style="@style/Widget.Curbox.FloatingNav"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            app:itemIconSize="24dp"
+            app:labelVisibilityMode="unlabeled"
+            app:paddingBottomSystemWindowInsets="false"
+            app:menu="@menu/bottom_nav_menu" />
+    </eightbitlab.com.blurview.BlurView>
 
 </RelativeLayout>

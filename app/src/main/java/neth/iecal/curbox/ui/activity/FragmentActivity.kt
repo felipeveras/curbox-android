@@ -70,6 +70,14 @@ class FragmentActivity : AppCompatActivity() {
 
         val bottomNav = findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottom_nav)
 
+        val navGlass = findViewById<eightbitlab.com.blurview.BlurView>(R.id.nav_glass)
+        val root = findViewById<android.view.ViewGroup>(R.id.main)
+        navGlass.setupWith(root)
+            .setFrameClearDrawable(window.decorView.background)
+            .setBlurRadius(22f)
+        navGlass.outlineProvider = android.view.ViewOutlineProvider.BACKGROUND
+        navGlass.clipToOutline = true
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
@@ -84,9 +92,9 @@ class FragmentActivity : AppCompatActivity() {
 
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, bottomPadding)
             // The floating nav keeps a gap above the system gesture bar.
-            (bottomNav.layoutParams as android.view.ViewGroup.MarginLayoutParams).bottomMargin =
+            (navGlass.layoutParams as android.view.ViewGroup.MarginLayoutParams).bottomMargin =
                 systemBars.bottom + (16 * resources.displayMetrics.density).toInt()
-            bottomNav.requestLayout()
+            navGlass.requestLayout()
             insets
         }
 
@@ -114,6 +122,7 @@ class FragmentActivity : AppCompatActivity() {
             CreateKeywordGroupFragment.FRAGMENT_ID -> {
                 // Hide bottom nav for these standalone fragments
                 bottomNav.visibility = android.view.View.GONE
+                navGlass.visibility = android.view.View.GONE
                 
                 val fragment = when (selectedFragment) {
                     OnboardingFragment.FRAGMENT_ID -> OnboardingFragment()
@@ -147,6 +156,7 @@ class FragmentActivity : AppCompatActivity() {
             else -> {
                 // Show bottom nav for main fragments
                 bottomNav.visibility = android.view.View.VISIBLE
+                navGlass.visibility = android.view.View.VISIBLE
 
                 // The last tab is "Info" on F-Droid. The Play Store build also
                 // hosts account and sync here, so it reads "Settings" instead.

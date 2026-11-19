@@ -201,6 +201,7 @@ dependencies {
 
     // QR Scanner & Generator
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation("com.github.Dimezis:BlurView:version-2.0.6")
     
     // Shizuku dependecies
     implementation (libs.api)
