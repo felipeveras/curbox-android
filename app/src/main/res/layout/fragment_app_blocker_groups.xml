@@ -4,7 +4,7 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
+    android:background="@android:color/transparent"
     android:padding="16dp">
 
     <TextView
@@ -50,10 +50,11 @@
         android:layout_marginBottom="24dp"
         android:contentDescription="@string/desc_add_group"
         android:src="@drawable/baseline_add_24"
-        app:backgroundTint="?attr/colorPrimaryContainer"
+        app:backgroundTint="?attr/colorPrimary"
+        app:tint="?attr/colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:tint="?attr/colorPrimary" />
+        />
 
     <Button
         android:id="@+id/btn_help"
