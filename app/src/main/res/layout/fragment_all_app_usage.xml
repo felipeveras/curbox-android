@@ -48,7 +48,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="100dp">
+                    android:layout_marginTop="56dp">
 
                     <Button
                         android:id="@+id/open_menu"
@@ -60,27 +60,35 @@
                         app:icon="@drawable/outline_more_vert_24" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:layout_below="@id/open_menu"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/bg_hero_ring"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="36dp">
 
                         <TextView
                             android:id="@+id/date_sublabel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:text="@string/total_today"
-                            android:textAppearance="@style/TextAppearance.Material3.LabelSmall" />
+                            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <TextView
                             android:id="@+id/total_usage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/coolvetica_rg"
-                            android:textColor="?attr/colorOnSurface"
-                            android:textSize="55sp"
-                            android:textStyle="bold" />
+                            android:autoSizeMaxTextSize="52sp"
+                            android:autoSizeMinTextSize="24sp"
+                            android:autoSizeTextType="uniform"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:textAppearance="@style/TextAppearance.Curbox.Hero"
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
                 </RelativeLayout>

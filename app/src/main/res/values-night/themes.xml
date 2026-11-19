@@ -51,6 +51,12 @@
 
         <item name="android:fontFamily">@font/inter</item>
         <item name="fontFamily">@font/inter</item>
+
+        <item name="android:windowBackground">@drawable/bg_aurora</item>
+        <item name="materialCardViewStyle">@style/Widget.Curbox.GlassCard</item>
+        <item name="materialButtonStyle">@style/Widget.Curbox.Button</item>
+        <item name="chipStyle">@style/Widget.Curbox.Chip</item>
+        <item name="bottomNavigationStyle">@style/Widget.Curbox.FloatingNav</item>
     </style>
 
 </resources>

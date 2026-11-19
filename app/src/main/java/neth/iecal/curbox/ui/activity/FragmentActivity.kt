@@ -83,6 +83,10 @@ class FragmentActivity : AppCompatActivity() {
             }
 
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, bottomPadding)
+            // The floating nav keeps a gap above the system gesture bar.
+            (bottomNav.layoutParams as android.view.ViewGroup.MarginLayoutParams).bottomMargin =
+                systemBars.bottom + (16 * resources.displayMetrics.density).toInt()
+            bottomNav.requestLayout()
             insets
         }
 

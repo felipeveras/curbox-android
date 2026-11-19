@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget.Curbox.GlassCard" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">@color/glass_surface</item>
+        <item name="strokeColor">@color/glass_stroke</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardCornerRadius">24dp</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+    <style name="Widget.Curbox.Button" parent="Widget.Material3.Button">
+        <item name="cornerRadius">999dp</item>
+        <item name="android:minHeight">52dp</item>
+        <item name="android:shadowColor">@color/glow_primary</item>
+    </style>
+
+    <style name="Widget.Curbox.Chip" parent="Widget.Material3.Chip.Filter">
+        <item name="chipCornerRadius">999dp</item>
+        <item name="chipBackgroundColor">@color/glass_surface</item>
+        <item name="chipStrokeColor">@color/glass_stroke</item>
+        <item name="chipStrokeWidth">1dp</item>
+    </style>
+
+    <style name="Widget.Curbox.FloatingNav" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">@drawable/bg_glass_nav</item>
+        <item name="backgroundTint">@null</item>
+        <item name="itemActiveIndicatorStyle">@style/Widget.Curbox.FloatingNav.Indicator</item>
+        <item name="itemIconTint">@color/nav_item_tint</item>
+        <item name="itemTextColor">@color/nav_item_tint</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="Widget.Curbox.FloatingNav.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">#383B82F6</item>
+    </style>
+
+    <style name="TextAppearance.Curbox.Hero" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="android:textSize">56sp</item>
+        <item name="fontWeight">300</item>
+        <item name="android:letterSpacing">-0.03</item>
+    </style>
+</resources>
