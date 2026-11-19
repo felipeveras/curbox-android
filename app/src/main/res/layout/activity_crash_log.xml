@@ -30,7 +30,7 @@
         app:cardCornerRadius="12dp"
         app:strokeWidth="1dp"
         app:strokeColor="?attr/colorOutlineVariant"
-        app:cardBackgroundColor="?attr/colorSurfaceContainerLow">
+        app:cardBackgroundColor="@color/glass_surface">
 
         <ScrollView
             android:layout_width="match_parent"

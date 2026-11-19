@@ -21,7 +21,13 @@ class ReelAppConfig {
 
             viewer = find(id="$packageName:id/clips_viewer_view_pager")
             controls = find(id="$packageName:id/clips_ufi_component")
-            if not isOnScreen(viewer) or not isOnScreen(controls) { return null }
+            if not isOnScreen(viewer) or not isOnScreen(controls) {
+                # Stories count as short videos too.
+                storyHeader = find(id="$packageName:id/reel_viewer_header")
+                storyMedia = find(id="$packageName:id/reel_viewer_media_container")
+                if not isOnScreen(storyHeader) or storyMedia == null { return null }
+                return "story:" + storyHeader.subtreeText(16, 4000)
+            }
 
             dmReplyBar = find(id="$packageName:id/reply_bar_container_scroll_view")
             openedFromDmInbox = isOnScreen(dmReplyBar)
@@ -34,6 +40,23 @@ class ReelAppConfig {
             if openedFromDmInbox {
                 return "$INSTAGRAM_DM_REEL_MARKER" + comparator
             }
+            return comparator
+        """.trimIndent()
+
+        private fun whatsappStatusScript(packageName: String) = """
+            ${isOnScreenFunction()}
+
+            pager = find(id="$packageName:id/playback_pager")
+            progress = find(id="$packageName:id/playback_progress")
+            if not isOnScreen(pager) or progress == null { return null }
+
+            comparator = ""
+            name = find(id="$packageName:id/name")
+            date = find(id="$packageName:id/date")
+            caption = find(id="$packageName:id/caption")
+            if name != null { comparator = comparator + name.subtreeText(2, 500) }
+            if date != null { comparator = comparator + date.subtreeText(2, 500) }
+            if caption != null { comparator = comparator + caption.subtreeText(4, 2000) }
             return comparator
         """.trimIndent()
 
@@ -71,6 +94,13 @@ class ReelAppConfig {
                     AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED,
                 deduplicateComparators = false,
                 initialComparator = "position:0"
+            ),
+
+            "com.whatsapp" to ReelAppData(
+                scriptSource = whatsappStatusScript("com.whatsapp")
+            ),
+            "com.whatsapp.w4b" to ReelAppData(
+                scriptSource = whatsappStatusScript("com.whatsapp.w4b")
             ),
 
             "com.google.android.youtube" to ReelAppData(

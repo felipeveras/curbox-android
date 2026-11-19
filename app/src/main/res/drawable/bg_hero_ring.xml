@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:endColor="@android:color/transparent"
+                android:gradientRadius="120dp"
+                android:startColor="@color/aurora_blue"
+                android:type="radial" />
+        </shape>
+    </item>
+    <item android:bottom="8dp" android:left="8dp" android:right="8dp" android:top="8dp">
+        <shape android:shape="oval">
+            <stroke android:width="12dp" android:color="@color/ring_track" />
+        </shape>
+    </item>
+    <item android:bottom="8dp" android:left="8dp" android:right="8dp" android:top="8dp">
+        <rotate android:fromDegrees="-90" android:toDegrees="-90" android:pivotX="50%" android:pivotY="50%">
+            <shape android:shape="ring" android:innerRadiusRatio="2.25" android:thickness="12dp" android:useLevel="false">
+                <gradient
+                    android:centerColor="#993B82F6"
+                    android:endColor="#3B82F6"
+                    android:startColor="#003B82F6"
+                    android:type="sweep" />
+            </shape>
+        </rotate>
+    </item>
+</layer-list>
