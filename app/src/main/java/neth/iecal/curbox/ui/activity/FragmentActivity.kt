@@ -74,7 +74,7 @@ class FragmentActivity : AppCompatActivity() {
         val root = findViewById<android.view.ViewGroup>(R.id.main)
         navGlass.setupWith(root)
             .setFrameClearDrawable(window.decorView.background)
-            .setBlurRadius(22f)
+            .setBlurRadius(25f)
         navGlass.outlineProvider = android.view.ViewOutlineProvider.BACKGROUND
         navGlass.clipToOutline = true
 
